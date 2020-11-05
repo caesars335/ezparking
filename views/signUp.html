@@ -13,6 +13,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
     <title>ลงทะเบียนผู้ให้เช่า</title>
 </head>
+<script>
+    $(document).ready(function () {
+        $("#btnSignup").click(function () {
+            let username = $("#txtUsername").val();
+            let password = $("#txtPassword").val();
+            let confirmPassword = $("#txtConfirmPassword").val();
+            let actualPassword;
+
+            if (password == confirmPassword && username != '' && password != '') {
+                actualPassword = password;
+                $.ajax({
+                    method: "PUT",
+                    url: "/addUser",
+                    data: { Username: username, Password: password }
+                }).done(function (data, state, xhr) {
+                    if (data[0].Username != undefined && data[0].Username != null && data[0].Username != '') {
+                        localStorage.UserID = data[0].UserID;
+                        window.location.replace('/')
+                    } else {
+                        alert('ชื่อผู้ใช้มีอยู่ในระบบแล้ว')
+                    }
+                }).fail(function (xhr, state, error) {
+                    alert("xhr")
+                })
+            } else {
+                if (password != confirmPassword) {
+                    alert("รหัสไม่ตรงกัน")
+                } else if (password == '') {
+                    alert("กรุณากรอกรหัส")
+                } else if (username == '') {
+                    alert("กรุณากรอกUsername")
+                } else {
+                    alert("กรุณากรอกข้อมูลให้ครบถ้วน")
+                }
+
+            }
+        });
+    });
+</script>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -27,10 +66,10 @@
                     <a class="nav-link" href="/">หน้าแรก</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">ตรวจสอบสถานะที่จอดรถ</a>
+                    <a class="nav-link" href="/checkStatus">ตรวจสอบสถานะที่จอดรถ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">เข่าสู่ระบบผู้ให้เช่า</a>
+                    <a class="nav-link" href="/signIn">เข้าสู่ระบบผู้ให้เช่า</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="/signUp">ลงทะเบียนผู้ให้เช่า <span class="sr-only">(current)</span></a>
@@ -56,7 +95,7 @@
             <div class="row ">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <input type="text" class="form-control mb-3" id="username" style="background-color: #eaeaea;"
+                    <input type="text" class="form-control mb-3" id="txtUsername" style="background-color: #eaeaea;"
                         placeholder="ชื่อผู้ใช้" onfocus="this.placeholder = ''"
                         onblur="this.placeholder = 'ชื่อผู้ใช้'" />
                 </div>
@@ -65,7 +104,7 @@
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <input type="password" class="form-control mb-3" id='password' style="background-color: #eaeaea;"
+                    <input type="password" class="form-control mb-3" id='txtPassword' style="background-color: #eaeaea;"
                         placeholder="รหัสผ่าน" onfocus="this.placeholder = ''" onblur="this.placeholder = 'รหัสผ่าน'" />
                 </div>
                 <div class="col-md-1"></div>
@@ -73,8 +112,8 @@
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <input type="password" class="form-control mb-3" id="conpassword" style="background-color: #eaeaea;"
-                        placeholder="ยืนยันรหัสผ่าน" onfocus="this.placeholder = ''"
+                    <input type="password" class="form-control mb-3" id="txtConfirmPassword"
+                        style="background-color: #eaeaea;" placeholder="ยืนยันรหัสผ่าน" onfocus="this.placeholder = ''"
                         onblur="this.placeholder = 'ยืนยันรหัสผ่าน'" />
                 </div>
                 <div class="col-md-1"></div>
@@ -82,7 +121,7 @@
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <button class="btn btn-primary" id="regis" style="width: 100%;">สมัครสมาชิก</button>
+                    <button class="btn btn-primary" id="btnSignup" style="width: 100%;">สมัครสมาชิก</button>
                 </div>
                 <div class="col-md-1"></div>
             </div>
