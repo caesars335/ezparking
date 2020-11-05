@@ -19,18 +19,21 @@
             let username = $("#txtUsername").val();
             let password = $("#txtPassword").val();
             let confirmPassword = $("#txtConfirmPassword").val();
+            let location = $("#txtLocation").val();
+            let phone = $("#txtPhone").val();
+            let activation = 'ไม่ว่าง';
             let actualPassword;
-
-            if (password == confirmPassword && username != '' && password != '') {
+            if (password == confirmPassword && username != '' && password != '' && location != '' && phone != '') {
                 actualPassword = password;
                 $.ajax({
                     method: "PUT",
                     url: "/addUser",
-                    data: { Username: username, Password: password }
+                    data: { Username: username, Password: password , Location: location, Phone: phone, Activation: activation}
                 }).done(function (data, state, xhr) {
                     if (data[0].Username != undefined && data[0].Username != null && data[0].Username != '') {
                         localStorage.UserID = data[0].UserID;
-                        window.location.replace('/')
+                        alert("ลงทะเบียนเรียบร้อยแล้ว")
+                        window.location.replace('/signIn')
                     } else {
                         alert('ชื่อผู้ใช้มีอยู่ในระบบแล้ว')
                     }
@@ -43,7 +46,11 @@
                 } else if (password == '') {
                     alert("กรุณากรอกรหัส")
                 } else if (username == '') {
-                    alert("กรุณากรอกUsername")
+                    alert("กรุณากรอกชื่อผู้ใช้")
+                }else if (location == '') {
+                    alert("กรุณากรอกชื่อตำแหน่งที่จอดรถ")
+                }else if (phone == '') {
+                    alert("กรุณากรอกเบอร์มือถือ")
                 } else {
                     alert("กรุณากรอกข้อมูลให้ครบถ้วน")
                 }
@@ -121,7 +128,23 @@
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <button class="btn btn-primary" id="btnSignup" style="width: 100%;">สมัครสมาชิก</button>
+                    <input type="text" class="form-control mb-3" id='txtLocation' style="background-color: #eaeaea;"
+                        placeholder="ชื่อตำแหน่งที่จอดรถ" onfocus="this.placeholder = ''" onblur="this.placeholder = 'ชื่อตำแหน่งที่จอดรถ'" />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control mb-3" id='txtPhone' style="background-color: #eaeaea;"
+                        placeholder="เบอร์มือถือ" onfocus="this.placeholder = ''" onblur="this.placeholder = 'เบอร์มือถือ'" />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <button class="btn btn-primary" id="btnSignup" style="width: 100%;">ลงทะเบียน</button>
                 </div>
                 <div class="col-md-1"></div>
             </div>

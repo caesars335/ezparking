@@ -26,7 +26,7 @@
                 }).done(function (data, state, xhr) {
                     if (data[0].Username != undefined && data[0].Username != null && data[0].Username != '' && data[0].Username != '0') {
                         localStorage.UserID = data[0].UserID;
-                        window.location.replace('/')
+                        window.location.replace('/toggleStatus')
                     } else {
                         alert("รหัสผ่านไม่ถูกต้อง")
                     }

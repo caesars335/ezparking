@@ -31,9 +31,33 @@ app.get("/signIn", function (req, res){
     res.sendFile(path.join(__dirname, "./views/signIn.html"))
 });
 
-//add user with normal form
+app.get("/checkStatus", function (req, res){
+    res.sendFile(path.join(__dirname, "./views/checkStatus.html"))
+});
+
+app.get("/toggleStatus", function (req, res){
+    res.sendFile(path.join(__dirname, "./views/toggleStatus.html"))
+});
+
+app.get("/getStatus", function (req, res) {
+
+    const sql = "SELECT Location, Activation FROM account";
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            // console.log(err)
+            res.status(500).send("Server error");
+        }
+        else {
+            res.json(result);
+            // console.log(result[0].TripID)
+
+        }
+    });
+})
+
+
 app.put("/addUser", function (req, res) {
-    const { Username, Password } = req.body
+    const { Username, Password , Location, Phone, Activation} = req.body
 
     const sql = "SELECT * FROM account WHERE Username = ?"
     con.query(sql, [Username], function (err, result, fields) {
@@ -43,9 +67,9 @@ app.put("/addUser", function (req, res) {
         }
         else {
             if (!result[0]) {
-                const sql2 = "INSERT INTO `account` ( `Username`, `Password`) VALUES (?, ?);"
+                const sql2 = "INSERT INTO `account` ( `Username`, `Password`, `Location`, `Phone` ,`Activation`) VALUES (?, ?, ?, ? ,?);"
                 bcrypt.hash(Password, saltRounds, function (err, hash) {
-                    con.query(sql2, [Username, hash], function (err2, result2, fields) {
+                    con.query(sql2, [Username, hash, Location, Phone, Activation], function (err2, result2, fields) {
                         if (err2) {
                             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง")
                             console.log(err2)
