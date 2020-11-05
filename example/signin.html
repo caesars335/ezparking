@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../script.js"></script>
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+    <title>Sign-in</title>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-md navbar-light sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><img src="../img/logo.png" id="navLogo"></img></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" id="txt-หน้าแรก" href="/">หน้าแรก</a>
+                    </li>
+                    <li class="nav-item active">
+
+                        <a class="nav-link" href="#" id="txt-ทริปท่องเที่ยว" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            ทริปท่องเที่ยว
+                        </a>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/createTrip_page">สร้างทริปท่องเที่ยว</a>
+                                    <a class="dropdown-item" href="/joinTrip_page">เข้าร่วมทริปท่องเที่ยว</a>
+                                    <a class="dropdown-item" href="/currentTrip_page">จำนวนทริปปัจจุบัน</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" id="txt-ทริปท่องเที่ยว" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            ประวัติทริปท่องเที่ยว
+                        </a>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/detailTrip_page">รายเอียดกิจกรรมการท่องเที่ยว</a>
+                                    <a class="dropdown-item" href="/member_page">กลุ่มสมาชิก</a>
+                                    <a class="dropdown-item" href="/divideExpense_page">หารค่าใช้จ่าย</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" id="txt-เกี่ยวกับ" href="/about_page">เกี่ยวกับ</a>
+                    </li>
+                    <li class="nav-item ml-4">
+                        <a class="nav-link btn" href="#" id="btn-ลงชื่อเข้าใช้" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" >
+                            ลงชื่อเข้าใช้
+                        </a>
+                       
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="row mb-5">
+        <div class="col-12"></div>
+    </div>
+    <div class="row mb-5">
+        <div class="col-12"></div>
+    </div>
+    <div class="row mt-5 mb-5">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <div class="background-square">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <button class="btn text-center" id="btn-signin-สมัครสมาชิก">สมัครสมาชิก</button>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <button class="btn" id="btn-signin-ลงชื่อเข้าใช้">ลงชื่อเข้าใช้</button>
+                    </div>
+                </div>
+                <div id="activeSigninTab">
+                    <div class="row mt-5">
+                        <div class="col-12"></div>
+                    </div>
+                    <div class="row justify-content-center mt-2 mb-5">
+                        <i class="fa fa-5x fa-user-circle-o" aria-hidden="true"></i>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-3 col-md-0"></div>
+                        <div class="col-lg-6 col-md-12">
+                            <input type="text" class="txtField mb-3" id="username1" style="background-color: #eaeaea;"
+                                placeholder="Username" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Username'" />
+                            <input type="password" class="txtField" id="password1" style="background-color: #eaeaea;"
+                                placeholder="Password" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Password'" />
+                        </div>
+                        <div class="col-lg-3 col-md-0"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-0"></div>
+                        <div class="col-lg-6 col-md-12">
+                            <button class="btn btnStandard" id="loginnormal" style="font-size: 160%;"
+                                onclick="">ลงชื่อเข้าใช้</button>
+                        </div>
+                        <div class="col-lg-3 col-md-0"></div>
+                    </div>
+                    <div class="row" style="margin-top: 35px;">
+                        <div class="col-12"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-0"></div>
+                        <div class="col-lg-6 col-md-12">
+                            <button class="btn btnStandard login_google"
+                                style="font-size: 160%;background-color: #dc4d3f;">
+                                <i class="fa fa-lg fa-google-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-md-0"></div>
+                    </div>
+                    <div class="row" style="margin-top: 35px;">
+                        <div class="col-12"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-0"></div>
+                        <div class="col-lg-6 col-md-12">
+                            <button class="btn btnStandard" style="font-size: 160%;">
+                                <i class="fa fa-lg fa-facebook" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-md-0"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-5"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-5"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-5"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-5"></div>
+                    </div>
+                </div>
+                <div id="activeSignupTab">
+                    <div class="row mt-5">
+                        <div class="col-12"></div>
+                    </div>
+                    <div class="row justify-content-center mt-2 mb-5">
+                        <i class="fa fa-5x fa-user-circle-o" aria-hidden="true"></i>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-3 col-md-0"></div>
+                        <div class="col-lg-6 col-md-12">
+                            <input type="text" class="txtField mb-3" id="username" style="background-color: #eaeaea;"
+                                placeholder="Username" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Username'" />
+                            <input type="password" class="txtField mb-3" id='password'
+                                style="background-color: #eaeaea;" placeholder="Password"
+                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" />
+                            <input type="password" class="txtField mb-3" id="conpassword"
+                                style="background-color: #eaeaea;" placeholder="Confirm Password"
+                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Confirm Password'" />
+                            <input type="text" class="txtField mb-3" id="email" style="background-color: #eaeaea;"
+                                placeholder="Email" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Email'" />
+                        </div>
+                        <div class="col-lg-3 col-md-0"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-0"></div>
+                        <div class="col-lg-6 col-md-12">
+                            <button class="btn btnStandard" id="regis" style="font-size: 160%;">สมัครสมาชิก</button>
+                        </div>
+                        <div class="col-lg-3 col-md-0"></div>
+                    </div>
+                    <div class="row" style="margin-top: 35px;">
+                        <div class="col-12"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-0"></div>
+                        <div class="col-lg-6 col-md-12">
+                            <button class="btn btnStandard login_google"
+                                style="font-size: 160%;background-color: #dc4d3f;">
+                                <i class="fa fa-lg fa-google-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-md-0"></div>
+                    </div>
+                    <div class="row" style="margin-top: 35px;">
+                        <div class="col-12"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-0"></div>
+                        <div class="col-lg-6 col-md-12">
+                            <button class="btn btnStandard" style="font-size: 160%;">
+                                <i class="fa fa-lg fa-facebook" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-md-0"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-5"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-5"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-5"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mt-5"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <!--- Footer -->
+    <footer>
+        <div class="container-fluid">
+            <div class="row mb-4">
+                <div class="col-md-12"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-3">
+                    <p class="txtFooter" id="txt-ft-หน้าแรก" onclick="pageHome()">หน้าแรก</p>
+                </div>
+                <div class="col-md-3">
+                    <p class="txtFooter" id="txt-ft-ทริปท่องเที่ยว" onclick="pageTrip()">ทริปท่องเที่ยว</p>
+                    <p class="txtFooter" id="txt-ft-สร้างทริปท่องเที่ยว" onclick="pageCreateTrip()">
+                        สร้างทริปท่องเที่ยว</p>
+                    <p class="txtFooter" id="txt-ft-เข้าร่วมทริปท่องเที่ยว" onclick="pageJoinTrip()">
+                        เข้าร่วมทริปท่องเที่ยว</p>
+                    <p class="txtFooter" id="txt-ft-จำนวนทริปปัจจุบัน" onclick="pageCurrentTrip()">จำนวนทริปปัจจุบัน
+                    </p>
+                </div>
+                <div class="col-md-3">
+                    <p class="txtFooter" id="txt-ft-ประวัติการใช้งาน" onclick="pageHistory()">ประวัติทริปท่องเที่ยว</p>
+                    <p class="txtFooter" id="txt-ft-รายเอียดกิจกรรมการท่องเที่ยว" onclick="pageDetailTrip()">
+                        รายเอียดกิจกรรมการท่องเที่ยว</p>
+                    <p class="txtFooter" id="txt-ft-กลุ่มสมาชิก" onclick="pageMember()">กลุ่มสมาชิก</p>
+                    <p class="txtFooter" id="txt-ft-หาาค่าใช้จ่าย" onclick="pageDivideExpense()">หารค่าใช้จ่าย</p>
+                </div>
+                <div class="col-md-2">
+                    <p class="txtFooter" id="txt-ft-เกี่ยวกับ" onclick="pageAbout()">เกี่ยวกับ</p>
+                </div>
+                <div class="col-12 mb-3">
+                    <hr class="ftHr">
+                    <h5 class="txtFooter  text-center">Copyright&copy2020 Mashare.All rights Reserved</h5>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+<script>
+    $(document).ready(function () {
+        $("#activeSignupTab").hide();
+        $("#btn-signin-สมัครสมาชิก").click(function () {
+            if ($('#btn-signin-สมัครสมาชิก').css('color') == 'rgb(1, 100, 184)') {
+                $("#btn-signin-สมัครสมาชิก").css({
+                    'background-color': '#0164b8',
+                    'color': 'white'
+                });
+                $("#btn-signin-ลงชื่อเข้าใช้").css({
+                    'background-color': 'white',
+                    'color': '#0164b8'
+                });
+                $("#activeSignupTab").show();
+                $("#activeSigninTab").hide();
+            }
+        });
+        $('#loginnormal').click(function () {
+            let user1 = ''
+            user1 = $('#username1').val();
+            let password1 = ''
+            password1 = $('#password1').val();
+            if (user1 != '' && password1 != '') {
+                $.ajax({
+                    method: "POST",
+                    url: "/login/normal",
+                    data: { Username: user1, Password1: password1 },
+                }).done(function (data, state, xhr) {
+                    if (data[0].Username != undefined && data[0].Username != null && data[0].Username != '' && data[0].Username != '0') {
+                        localStorage.UserID = data[0].UserID;
+                        window.location.replace('/')
+                    } else {
+                        alert("รหัสผ่านไม่ถูกต้อง")
+                    }
+
+                }).fail(function (xhr, state, error) {
+                    alert(xhr.responseText)
+                })
+            } else {
+                alert('กรอกข้อมูลให้ครบถ้วน')
+            }
+
+        })
+
+
+        $('#regis').click(function () {
+           
+            //get data from text field
+            let email = ''
+            email = $('#email').val();
+            let user = ''
+            user = $('#username').val();
+            let realpass;
+            let password = $('#password').val();
+            let confirm = $('#conpassword').val();
+            if (password == confirm && password != '' && email != '' && user != '') {
+                realpass = password;
+                $.ajax({
+                    method: "PUT",
+                    url: "/Adduser/normal",
+                    data: { Username: user, Password: realpass, UserEmail: email },
+                }).done(function (data, state, xhr) {
+                    if (data[0].Username != undefined && data[0].Username != null && data[0].Username != '' && data[0].Username != '0') {
+                        localStorage.UserID = data[0].UserID;
+                        window.location.replace('/')
+                    } else {
+                        alert('ชื่อผู้ใช้ หรือ email นี้มีอยู่ในระบบแล้ว')
+                    }
+
+                }).fail(function (xhr, state, error) {
+                    alert(xhr)
+                })
+            } else {
+                if (password != confirm) {
+                    alert("รหัสไม่ตรงกัน")
+                } else if (password == '') {
+                    alert("กรุณากรอกรหัส")
+                } else if (email == '') {
+                    alert("กรุณากรอกEmail")
+                } else if (user == '') {
+                    alert("กรุณากรอกUsername")
+                } else {
+                    alert("กรุณากรอกข้อมูลให้ครบถ้วน")
+                }
+
+            }
+        })
+
+        $("#btn-signin-ลงชื่อเข้าใช้").click(function () {
+            if ($('#btn-signin-ลงชื่อเข้าใช้').css('color') == 'rgb(1, 100, 184)') {
+                $("#btn-signin-ลงชื่อเข้าใช้").css({
+                    'background-color': '#0164b8',
+                    'color': 'white'
+                });
+                $("#btn-signin-สมัครสมาชิก").css({
+                    'background-color': 'white',
+                    'color': '#0164b8'
+                });
+                $("#activeSignupTab").hide();
+                $("#activeSigninTab").show();
+            }
+        });
+        $('.login_google').click(function () {
+            window.location.replace("/auth/google");
+        });
+    });
+</script>
+
+</html>

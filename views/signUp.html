@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+    <title>ลงทะเบียนผู้ให้เช่า</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Ez Parking</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">หน้าแรก</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">ตรวจสอบสถานะที่จอดรถ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">เข่าสู่ระบบผู้ให้เช่า</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/signUp">ลงทะเบียนผู้ให้เช่า <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="row centered">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 bg" style="color: gray;">__</div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="row centered">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 bg">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <h1 class="text-white">ลงทะเบียนผู้ให้เช่า</h1>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row ">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control mb-3" id="username" style="background-color: #eaeaea;"
+                        placeholder="ชื่อผู้ใช้" onfocus="this.placeholder = ''"
+                        onblur="this.placeholder = 'ชื่อผู้ใช้'" />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <input type="password" class="form-control mb-3" id='password' style="background-color: #eaeaea;"
+                        placeholder="รหัสผ่าน" onfocus="this.placeholder = ''" onblur="this.placeholder = 'รหัสผ่าน'" />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <input type="password" class="form-control mb-3" id="conpassword" style="background-color: #eaeaea;"
+                        placeholder="ยืนยันรหัสผ่าน" onfocus="this.placeholder = ''"
+                        onblur="this.placeholder = 'ยืนยันรหัสผ่าน'" />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <button class="btn btn-primary" id="regis" style="width: 100%;">สมัครสมาชิก</button>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="row centered">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 bg" style="color: gray;">__</div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="row centered">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 bg" style="color: gray;">__</div>
+        <div class="col-md-3"></div>
+    </div>
+
+</body>
+
+</html>
+<style>
+    body {
+        display: table;
+        width: 100%;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/parkingspace.jpg');
+        background-position: center top;
+        height: 350px;
+    }
+
+    .bg {
+        background-color: gray
+    }
+
+    .centered {
+        position: relative;
+        top: 100px;
+    }
+</style>
