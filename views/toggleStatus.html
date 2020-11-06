@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+    <title>ผู้ให้เช่า</title>
+</head>
+
+<script>
+    var userid = localStorage.UserID;
+    var currentStatus;
+    $(document).ready(function () {
+        $('#btnSignIn').click(function () {
+            window.location.replace("/signIn");
+        });
+        $('#btnSignUp').click(function () {
+            window.location.replace("/signUp");
+        });
+        $('#btnCheckStatus').click(function () {
+            window.location.replace("/checkStatus");
+        });
+
+        $('#btnSave').click(function (e) {
+            const firstname = $("#txtFirstname").val();
+            const lastname = $("#txtLastname").val();
+            const location = $("#txtLocation").val();
+            const phone = $("#txtPhone").val();
+            const newUserID = userid;
+            $.ajax({
+                type: "put",
+                url: "/editInfo",
+                data: { UserID: newUserID, Firstname: firstname, Lastname: lastname, Location: location, Phone: phone },
+            }).done(function (data, state, shr) {
+                alert("แก้ไขข้อมูลเรียบร้อยแล้ว");
+                window.location.replace(data);
+            }).fail(function (xhr, state, error) {
+                alert("failing")
+            });
+        });
+
+        $('#changeStatus').click(function (e) {
+            var checkStatus
+            if (currentStatus == 'ว่าง') {
+                checkStatus = 'ไม่ว่าง'
+            } else {
+                checkStatus = 'ว่าง'
+            }
+            const activation = checkStatus;
+            const newUserID = userid;
+            $.ajax({
+                type: "put",
+                url: "/changeStatus",
+                data: { UserID: newUserID, Activation: activation },
+            }).done(function (data, state, shr) {
+                alert("เปลี่ยนสถานะเรียบร้อยแล้ว");
+                window.location.replace(data);
+            }).fail(function (xhr, state, error) {
+                alert("failing")
+                console.log(error)
+            });
+        });
+
+        $('#btnSignOut').click(function (e) {
+            localStorage.removeItem("UserID");
+            window.location.replace('/')
+        });
+
+
+        loadData();
+
+        function loadData() {
+            if (localStorage.UserID) {
+                $.ajax({
+                    type: "get",
+                    url: "/getLocationName/" + userid,
+                    success: function (data) {
+                        // alert(data[0].Location + " " + data[0].Firstname + " " + data[0].Lastname + " " + data[0].Phone)
+                        $("#firstname").html(data[0].Firstname)
+                        $("#lastname").html(data[0].Lastname)
+                        $("#phone").html(data[0].Phone)
+                        $("#location").html(data[0].Location)
+                        $("#txtActivation").html(data[0].Activation)
+                        $("#txtFirstname").val(data[0].Firstname);
+                        $("#txtLastname").val(data[0].Lastname);
+                        $("#txtLocation").val(data[0].Location);
+                        $("#txtPhone").val(data[0].Phone);
+
+                        currentStatus = data[0].Activation;
+                    }
+                });
+            } else {
+                alert("จำเป็นต้องเข้าสู่ระบบก่อน")
+                window.location.replace("/signIn");
+            }
+        }
+    });
+</script>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Ez Parking</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <button class="btn btn-danger" id="btnSignOut">ออกจากระบบ</button>
+        </div>
+    </nav>
+    <div class="row centered">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="jumbotron jumbotron text-white">
+                <div class="container row">
+                    <div class="col-md-4 col-sm-12">
+                        <h3>สถานที่จอดรถ</h3>
+                        <p><strong>สถานะปัจจุบัน: </strong><span id="txtActivation"></span></p>
+                        <button class="btn btn-primary" id="changeStatus">เปลี่ยนสถานะที่จอดรถ</button>
+                    </div>
+                    <div class="col-md-4 col-sm-0"></div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <h3>ข้อมูลผู้ใช้</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-success" data-toggle="modal"
+                                    data-target="#exampleModal">แก้ไขข้อมูล</button>
+                            </div>
+                        </div>
+                        <p><strong>ชื่อจริง: </strong><span id="firstname"></span></p>
+                        <p><strong>นามสกุล: </strong><span id="lastname"></span></p>
+                        <p><strong>ชื่อสถานที่จอดรถ: </strong><span id="location"></span></p>
+                        <p><strong>เบอร์มือถือ: </strong><span id="phone"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขข้อมูล</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <input type="password" class="form-control mb-3" id='txtPassword' style="background-color: #eaeaea;"
+                        placeholder="รหัสผ่าน" onfocus="this.placeholder = ''" onblur="this.placeholder = 'รหัสผ่าน'" />
+                </div>
+                <div class="col-md-1"></div>
+            </div> -->
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10">
+                            <p>ชื่อจริง</p>
+                            <input type="text" class="form-control mb-3" id='txtFirstname'
+                                style="background-color: #eaeaea;" placeholder="ชื่อจริง"
+                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'ชื่อจริง'" />
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10">
+                            <p>นามสกุล</p>
+                            <input type="text" class="form-control mb-3" id='txtLastname'
+                                style="background-color: #eaeaea;" placeholder="นามสกุล" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'นามสกุล'" />
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10">
+                            <p>ชื่อตำแหน่งที่จอดรถ</p>
+                            <input type="text" class="form-control mb-3" id='txtLocation'
+                                style="background-color: #eaeaea;" placeholder="ชื่อตำแหน่งที่จอดรถ"
+                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'ชื่อตำแหน่งที่จอดรถ'" />
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10">
+                            <p>เบอร์มือถือ</p>
+                            <input type="text" class="form-control mb-3" id='txtPhone'
+                                style="background-color: #eaeaea;" placeholder="เบอร์มือถือ"
+                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'เบอร์มือถือ'" />
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="btnSave">บันทึก</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<style>
+    body {
+        display: table;
+        width: 100%;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/parkingspace.jpg');
+        background-position: center top;
+        height: 350px;
+    }
+
+    .jumbotron {
+        background-color: gray
+    }
+
+    .centered {
+        position: relative;
+        top: 100px;
+    }
+</style>

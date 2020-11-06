@@ -13,7 +13,7 @@ let config = {
   };
 
 const app = express();
-const con = mysql.createConnection(config);
+const con = mysql.createConnection(config,{multipleStatements: true});
 
 app.use(body_parser.urlencoded({ extended: true }));
 app.use(body_parser.json());
@@ -57,7 +57,7 @@ app.get("/getStatus", function (req, res) {
 
 
 app.put("/addUser", function (req, res) {
-    const { Username, Password , Location, Phone, Activation} = req.body
+    const { Username, Password , Firstname , Lastname , Location, Phone, Activation} = req.body
 
     const sql = "SELECT * FROM account WHERE Username = ?"
     con.query(sql, [Username], function (err, result, fields) {
@@ -67,9 +67,9 @@ app.put("/addUser", function (req, res) {
         }
         else {
             if (!result[0]) {
-                const sql2 = "INSERT INTO `account` ( `Username`, `Password`, `Location`, `Phone` ,`Activation`) VALUES (?, ?, ?, ? ,?);"
+                const sql2 = "INSERT INTO `account` ( `Username`, `Password`, `Firstname`, `Lastname`, `Location`, `Phone` ,`Activation`) VALUES (?, ?, ?, ? ,?, ? ,?);"
                 bcrypt.hash(Password, saltRounds, function (err, hash) {
-                    con.query(sql2, [Username, hash, Location, Phone, Activation], function (err2, result2, fields) {
+                    con.query(sql2, [Username, hash, Firstname, Lastname,  Location, Phone, Activation], function (err2, result2, fields) {
                         if (err2) {
                             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง")
                             console.log(err2)
@@ -121,6 +121,56 @@ app.post("/login", function (req, res) {
             } else {
                 res.send('0')
             }
+        }
+    })
+});
+
+app.get("/getLocationName/:UserID", function (req, res) {
+    var UserID = req.params.UserID;
+    const sqlTrip = "SELECT Location, Firstname, Lastname, Phone, Activation FROM `account` WHERE UserID =?";
+    con.query(sqlTrip, [UserID], function (err, result, fields) {
+        if (err) {
+            // console.log(err)
+            res.status(500).send("Server error");
+        }
+        else {
+            res.json(result);
+            // console.log(result[0].TripID)
+        }
+    });
+});
+
+app.put("/editInfo", function (req, res) {
+    const Firstname = req.body.Firstname;
+    const Lastname = req.body.Lastname;
+    const Location = req.body.Location;
+    const Phone = req.body.Phone;
+    const UserID = req.body.UserID;
+
+    const sql = "UPDATE `account` SET `Firstname` = ?,`Lastname` = ?, `Location` = ?, `Phone` = ? WHERE `UserID` = ?;"
+    con.query(sql, [Firstname, Lastname, Location, Phone, UserID], function (err, result, fields) {
+        if (err) {
+            console.log(err)
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        }
+        else {
+            res.send("/toggleStatus");
+        }
+    })
+});
+
+app.put("/changeStatus", function (req, res) {
+    const Activation = req.body.Activation
+    const UserID = req.body.UserID;
+
+    const sql = "UPDATE `account` SET `Activation` = ? WHERE `UserID` = ?;"
+    con.query(sql, [Activation, UserID], function (err, result, fields) {
+        if (err) {
+            console.log(err)
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        }
+        else {
+            res.send("/toggleStatus");
         }
     })
 });

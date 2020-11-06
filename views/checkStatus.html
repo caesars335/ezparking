@@ -26,9 +26,16 @@
     var userid = localStorage.UserID
     $(document).ready(function () {
         loaddata()
+
+        $("#btnReload").click(function (e) {
+            window.location.replace("/checkStatus");
+        });
     });
 
     function loaddata() {
+        if (localStorage.UserID) {
+            window.location.replace("/toggleStatus");
+        }
 
         CurrentTable = $('.table').DataTable({
             "searching": false,
@@ -69,18 +76,19 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Ez Parking</a>
+        <a class="navbar-brand" href="/">Ez Parking</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">หน้าแรก <span class="sr-only">(current)</span></a>
-                </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/checkStatus">ตรวจสอบสถานะที่จอดรถ</a>
+                    <a class="nav-link" href="/">หน้าแรก</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/checkStatus">ตรวจสอบสถานะที่จอดรถ <span
+                            class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/signIn">เข้าสู่ระบบผู้ให้เช่า</a>
@@ -99,6 +107,7 @@
                     <div class="col-md-2"></div>
                     <div class="col-md-8">
                         <h2>ตรวจสอบสถานะที่จอดรถ</h2>
+                        <button class="btn btn-success" id="btnReload">โหลดข้อมูลใหม่</button>
                         <table class="table table-striped table-bordered mt-5" style="width:100%"></table>
                     </div>
                     <div class="col-md-2"></div>
