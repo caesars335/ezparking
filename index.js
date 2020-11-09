@@ -129,6 +129,20 @@ app.post("/login", function (req, res) {
     })
 });
 
+app.get("/getAllProvinces", function (req, res) {
+    const sql = "SELECT name_th FROM `provinces`";
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            // console.log(err)
+            res.status(500).send("Server error");
+        }
+        else {
+            res.json(result);
+            // console.log(result[0].TripID)
+        }
+    });
+});
+
 app.get("/getLocationName/:UserID", function (req, res) {
     var UserID = req.params.UserID;
     const sqlTrip = "SELECT Location, Firstname, Lastname, Phone, Activation FROM `account` WHERE UserID =?";

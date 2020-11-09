@@ -17,6 +17,7 @@
 </head>
 <script>
     $(document).ready(function () {
+        loadData();
         $("#btnSignup").click(function () {
             let username = $("#txtUsername").val();
             let password = $("#txtPassword").val();
@@ -61,6 +62,21 @@
 
             }
         });
+
+        function loadData() {
+            $.ajax({
+            type: "get",
+            url: "/getAllProvinces",
+            success: function (dataSet) {
+                // alert(dataSet[0].name_th)
+                var optionData
+                for(let i = 0; i < dataSet.length; i++){
+                    optionData = optionData + "<option value='"+dataSet[i].name_th+"'>"+ dataSet[i].name_th +"</option>"
+                }
+                $("select").html(optionData);
+            }
+        });
+        }
     });
 </script>
 
@@ -109,6 +125,14 @@
                 </div>
                 <div class="col-md-1"></div>
             </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <h3 class="text-white mb-3">ข้อมูลบัญชี</h3>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
             <div class="row ">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
@@ -138,6 +162,14 @@
                 </div>
                 <div class="col-md-1"></div>
             </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <h3 class="text-white mb-3">ข้อมูลส่วนตัว</h3>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
@@ -159,16 +191,6 @@
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <h5 class="text-white">ชื่อบริการที่จอดรถ</h5>
-                    <input type="text" class="form-control mb-3" id='txtLocation' style="background-color: #eaeaea;"
-                        placeholder="ชื่อบริการที่จอดรถ" onfocus="this.placeholder = ''"
-                        onblur="this.placeholder = 'ชื่อบริการที่จอดรถ'" />
-                </div>
-                <div class="col-md-1"></div>
-            </div>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
                     <h5 class="text-white">เบอร์มือถือ</h5>
                     <input type="text" class="form-control mb-3" id='txtPhone' style="background-color: #eaeaea;"
                         placeholder="เบอร์มือถือ" onfocus="this.placeholder = ''"
@@ -176,6 +198,34 @@
                 </div>
                 <div class="col-md-1"></div>
             </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <h5 class="text-white">Email</h5>
+                    <input type="text" class="form-control mb-3" id='txtLocation' style="background-color: #eaeaea;"
+                        placeholder="Email" onfocus="this.placeholder = ''"
+                        onblur="this.placeholder = 'Email'" />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <h3 class="text-white mb-3">ข้อมูลสถานที่ให้บริการจอดรถ</h3>
+                </div>
+                </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <h5 class="text-white">ชื่อบริการ <span><h6>(เช่น ลานจอดสมหมาย , แก้วใจบริการจอดรถ)</h6></span></h5>
+                    <input type="text" class="form-control mb-3" id='txtLocation' style="background-color: #eaeaea;"
+                        placeholder="ชื่อบริการที่จอดรถ" onfocus="this.placeholder = ''"
+                        onblur="this.placeholder = 'ชื่อบริการที่จอดรถ'" />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <select name="provinces" id="provinces"></select>
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
