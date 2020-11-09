@@ -20,6 +20,8 @@
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
     <title>ตรวจสอบสถานะที่จอดรถ</title>
 </head>
 <script>
@@ -28,7 +30,7 @@
         loaddata()
 
         $("#btnReload").click(function (e) {
-            window.location.replace("/checkStatus");
+            window.location.replace("/searchParking");
         });
     });
 
@@ -38,11 +40,11 @@
         }
 
         CurrentTable = $('.table').DataTable({
-            "searching": false,
-            "lengthChange": false,
-            "paging": false,
-            "ordering": false,
-            "info": false,
+            "searching": true,
+            "lengthChange": true,
+            "paging": true,
+            "ordering": true,
+            "info": true,
             responsive: true,
             deferRender: true,
             columns: [
@@ -75,30 +77,35 @@
 </script>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">Ez Parking</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-md navbar-light navBG sticky-top">
+        <div class="container-fluid">
+          <!-- Insert LOGO on the nav -->
+          <a class="navbar-brand" href="/"><img src="img/NavLogo.png"></img></a>
+          <!-- Menu Icon -->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
             <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">หน้าแรก</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/checkStatus">ตรวจสอบสถานะที่จอดรถ <span
-                            class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/signIn">เข้าสู่ระบบผู้ให้เช่า</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/signUp">ลงทะเบียนผู้ให้เช่า</a>
-                </li>
+          </button>
+          <!-- Creating menus link -->
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <!-- ml-auto will move links to the right side of navbar -->
+            <ul class="navbar-nav ml-auto">
+              <!-- active is to highlight -->
+              <li class="nav-item active">
+                <a class="nav-link" href="/">หน้าหลัก</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/searchParking">ค้นหาที่จอดรถ</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/signUp">สนใจเป็นผู้ให้เช่าที่จอดรถ</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/signIn">เข้าสู่ระบบ</a>
+              </li>
             </ul>
+          </div>
         </div>
-    </nav>
+      </nav>
     <div class="row centered">
         <div class="col-md-2"></div>
         <div class="col-md-8">
@@ -117,7 +124,38 @@
         <div class="col-md-2"></div>
     </div>
 
+  <!--- Footer -->
+  <footer>
+    <div class="container-fluid mt-5 navBG">
+      <div class="row text-center">
+        <div class="col-md-4 mt-1">
+          <a href="/"> <img src="img/NavLogo.png"></img></a>
+          <hr class="dark">
+          <iframe
+            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FEz-Parking-100529508543981%2F&tabs=timeline&width=340&height=300&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+            width="340" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+            allowTransparency="true" allow="encrypted-media"></iframe>
+        </div>
+        <div class="col-md-4">
+          <hr class="dark">
+          <h5 class="text-dark">ติดต่อสอบถามเรา</h5>
+          <hr class="dark">
+          <p class="text-dark">Facebook: Ez Parking</p>
+        </div>
+        <div class="col-md-4">
+          <hr class="dark">
+          <h5 class="text-dark">ชั่วโมงการติดต่อ</h5>
+          <hr class="dark">
+          <p class="text-dark">จ-ศ: 9:00-16:00</p>
 
+        </div>
+        <div class="col-12">
+          <hr class="dark">
+          <h5 class="text-dark">&copy; ezparkingthailand.space</h5>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 
 </html>

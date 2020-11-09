@@ -31,12 +31,16 @@ app.get("/signIn", function (req, res){
     res.sendFile(path.join(__dirname, "./views/signIn.html"))
 });
 
-app.get("/checkStatus", function (req, res){
-    res.sendFile(path.join(__dirname, "./views/checkStatus.html"))
+app.get("/searchParking", function (req, res){
+    res.sendFile(path.join(__dirname, "./views/searchParking.html"))
 });
 
 app.get("/toggleStatus", function (req, res){
     res.sendFile(path.join(__dirname, "./views/toggleStatus.html"))
+});
+
+app.get("/test", function (req, res){
+    res.sendFile(path.join(__dirname, "./views/guestHome.html"))
 });
 
 app.get("/getStatus", function (req, res) {

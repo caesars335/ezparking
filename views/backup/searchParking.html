@@ -5,51 +5,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
-    <title>เข้าสู่ระบบผู้ให้เช่า</title>
+    <title>ตรวจสอบสถานะที่จอดรถ</title>
 </head>
 <script>
+    var userid = localStorage.UserID
     $(document).ready(function () {
-        loadData();
+        loaddata()
 
-        function loadData() {
-            if (localStorage.UserID) {
-                window.location.replace("/toggleStatus");
-            }
-        }
-        $('#btnSignin').click(function () {
-            let username = $('#txtUsername').val();
-            let password = $('#txtPassword').val();
-            if (username != '' && password != '') {
-                $.ajax({
-                    method: "POST",
-                    url: "/login",
-                    data: { Username: username, Password1: password },
-                }).done(function (data, state, xhr) {
-                    if (data[0].Username != undefined && data[0].Username != null && data[0].Username != '' && data[0].Username != '0') {
-                        localStorage.UserID = data[0].UserID;
-                        window.location.replace('/toggleStatus')
-                    } else {
-                        alert("รหัสผ่านไม่ถูกต้อง")
-                    }
-
-                }).fail(function (xhr, state, error) {
-                    alert("xhr.responseText")
-                })
-            } else {
-                alert('กรอกข้อมูลให้ครบถ้วน')
-            }
-
-        })
-
+        $("#btnReload").click(function (e) {
+            window.location.replace("/searchParking");
+        });
     });
+
+    function loaddata() {
+        if (localStorage.UserID) {
+            window.location.replace("/toggleStatus");
+        }
+
+        CurrentTable = $('.table').DataTable({
+            "searching": true,
+            "lengthChange": true,
+            "paging": true,
+            "ordering": true,
+            "info": true,
+            responsive: true,
+            deferRender: true,
+            columns: [
+                { data: "No", title: "ลำดับ" },
+                { data: "Location", title: "ชื่อสถานที่จอดรถ" },
+                { data: "Activation", title: "สถานะ" },
+
+            ],
+
+        });
+
+        $.ajax({
+            type: "get",
+            url: "/getStatus/",
+            success: function (dataSet) {
+                console.log(dataSet)
+                for (let i = 0; i < dataSet.length; i++) {
+                    dataSet[i].No = i + 1
+                }
+
+                //clear DataTable
+                CurrentTable.clear();
+                //display modified JSON in DataTable
+                CurrentTable.rows.add(dataSet).draw();
+
+            }
+        });
+    }
+
 </script>
 
 <body>
@@ -83,68 +107,24 @@
         </div>
       </nav>
     <div class="row centered">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 bg" style="color: gray;">__</div>
-        <div class="col-md-3"></div>
-    </div>
-    <div class="row centered">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 bg">
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <h1 class="text-white">เข้าสู่ระบบผู้ให้เช่า</h1>
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="jumbotron jumbotron text-white">
+                <div class="container row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <h2>ตรวจสอบสถานะที่จอดรถ</h2>
+                        <button class="btn btn-success" id="btnReload">โหลดข้อมูลใหม่</button>
+                        <table class="table table-striped table-bordered mt-5" style="width:100%"></table>
+                    </div>
+                    <div class="col-md-2"></div>
                 </div>
-                <div class="col-md-1"></div>
             </div>
-            <div class="row ">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                  <h5 class="text-white">ชื่อผู้ใช้ (Username)</h5>
-                    <input type="text" class="form-control mb-3" id="txtUsername" style="background-color: #eaeaea;"
-                        placeholder="ชื่อผู้ใช้" onfocus="this.placeholder = ''"
-                        onblur="this.placeholder = 'ชื่อผู้ใช้'" />
-                </div>
-                <div class="col-md-1"></div>
-            </div>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                  <h5 class="text-white">รหัสผ่าน</h5>
-                    <input type="password" class="form-control mb-3" id='txtPassword' style="background-color: #eaeaea;"
-                        placeholder="รหัสผ่าน" onfocus="this.placeholder = ''" onblur="this.placeholder = 'รหัสผ่าน'" />
-                </div>
-                <div class="col-md-1"></div>
-            </div>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <button class="btn btn-primary" id="btnSignin" style="width: 100%;">เข่าสู่ระบบ</button>
-                </div>
-                <div class="col-md-1"></div>
-            </div>
-            <div class="row">
-              <div class="col-md-1"></div>
-              <div class="col-md-10">
-                  <p class="text-white">*หากลืมรหัสผ่านโปรดติดต่อเราทางเพจ Facebook: Ez Parking</p>
-              </div>
-              <div class="col-md-1"></div>
-          </div>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-2"></div>
     </div>
-    <div class="row centered">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 bg" style="color: gray;">__</div>
-        <div class="col-md-3"></div>
-    </div>
-    <div class="row  mt-5">
-      <div class="col-sm-12"></div>
-  </div>
-  <div class="row  mt-5">
-    <div class="col-sm-12"></div>
-</div>
-      <!--- Footer -->
+
+  <!--- Footer -->
   <footer>
     <div class="container-fluid mt-5 navBG">
       <div class="row text-center">
@@ -188,7 +168,7 @@
         height: 350px;
     }
 
-    .bg {
+    .jumbotron {
         background-color: gray
     }
 

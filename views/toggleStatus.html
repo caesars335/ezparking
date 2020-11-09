@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
     <title>ผู้ให้เช่า</title>
 </head>
 
@@ -25,7 +27,7 @@
             window.location.replace("/signUp");
         });
         $('#btnCheckStatus').click(function () {
-            window.location.replace("/checkStatus");
+            window.location.replace("/searchParking");
         });
 
         $('#btnSave').click(function (e) {
@@ -105,16 +107,24 @@
 </script>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Ez Parking</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-md navbar-light navBG sticky-top">
+        <div class="container-fluid">
+          <!-- Insert LOGO on the nav -->
+          <a class="navbar-brand" href="/"><img src="img/NavLogo.png"></img></a>
+          <!-- Menu Icon -->
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
             <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <button class="btn btn-danger" id="btnSignOut">ออกจากระบบ</button>
+          </button>
+          <!-- Creating menus link -->
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <!-- ml-auto will move links to the right side of navbar -->
+            <ul class="navbar-nav ml-auto">
+              <!-- active is to highlight -->
+              <button class="btn btn-danger" id="btnSignOut">ออกจากระบบ</button>
+            </ul>
+          </div>
         </div>
-    </nav>
+      </nav>
     <div class="row centered">
         <div class="col-md-2"></div>
         <div class="col-md-8">
@@ -215,6 +225,38 @@
             </div>
         </div>
     </div>
+      <!--- Footer -->
+  <footer>
+    <div class="container-fluid mt-5 navBG">
+      <div class="row text-center">
+        <div class="col-md-4 mt-1">
+          <a href="/"> <img src="img/NavLogo.png"></img></a>
+          <hr class="dark">
+          <iframe
+            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FEz-Parking-100529508543981%2F&tabs=timeline&width=340&height=300&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+            width="340" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+            allowTransparency="true" allow="encrypted-media"></iframe>
+        </div>
+        <div class="col-md-4">
+          <hr class="dark">
+          <h5 class="text-dark">ติดต่อสอบถามเรา</h5>
+          <hr class="dark">
+          <p class="text-dark">Facebook: Ez Parking</p>
+        </div>
+        <div class="col-md-4">
+          <hr class="dark">
+          <h5 class="text-dark">ชั่วโมงการติดต่อ</h5>
+          <hr class="dark">
+          <p class="text-dark">จ-ศ: 9:00-16:00</p>
+
+        </div>
+        <div class="col-12">
+          <hr class="dark">
+          <h5 class="text-dark">&copy; ezparkingthailand.space</h5>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 
 </html>
