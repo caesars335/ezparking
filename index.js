@@ -138,7 +138,45 @@ app.get("/getAllProvinces", function (req, res) {
         }
         else {
             res.json(result);
-            // console.log(result[0].TripID)
+        }
+    });
+});
+
+app.get("/getAllAmphures", function (req, res) {
+    const sql = "SELECT name_th FROM `amphures`";
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            // console.log(err)
+            res.status(500).send("Server error");
+        }
+        else {
+            res.json(result);
+        }
+    });
+});
+
+app.get("/getAllDistricts", function (req, res) {
+    const sql = "SELECT name_th FROM `districts`";
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            // console.log(err)
+            res.status(500).send("Server error");
+        }
+        else {
+            res.json(result);
+        }
+    });
+});
+
+app.get("/getAllGeo", function (req, res) {
+    const sql = "SELECT name FROM `geographies`";
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            // console.log(err)
+            res.status(500).send("Server error");
+        }
+        else {
+            res.json(result);
         }
     });
 });

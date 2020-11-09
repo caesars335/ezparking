@@ -17,6 +17,7 @@
 </head>
 <script>
     $(document).ready(function () {
+        var geoEvent = document.getElementById("geoData");
         loadData();
         $("#btnSignup").click(function () {
             let username = $("#txtUsername").val();
@@ -64,64 +65,110 @@
         });
 
         function loadData() {
+            // $.ajax({
+            //     type: "get",
+            //     url: "/getAllProvinces",
+            //     success: function (dataSet) {
+            //         // alert(dataSet[0].name_th)
+            //         var provinceData
+            //         for (let i = 0; i < dataSet.length; i++) {
+            //             provinceData = provinceData + "<option value='" + dataSet[i].name_th + "'>" + dataSet[i].name_th + "</option>"
+            //         }
+            //         $("#provinceData").html(provinceData);
+            //     }
+            // });
+
+            // $.ajax({
+            //     type: "get",
+            //     url: "/getAllAmphures",
+            //     success: function (dataSet) {
+            //         // alert(dataSet[0].name_th)
+            //         var amphurData
+            //         for (let i = 0; i < dataSet.length; i++) {
+            //             amphurData = amphurData + "<option value='" + dataSet[i].name_th + "'>" + dataSet[i].name_th + "</option>"
+            //         }
+            //         $("#amphurData").html(amphurData);
+            //     }
+            // });
+
+            // $.ajax({
+            //     type: "get",
+            //     url: "/getAllDistricts",
+            //     success: function (dataSet) {
+            //         // alert(dataSet[0].name_th)
+            //         var districtData
+            //         for (let i = 0; i < dataSet.length; i++) {
+            //             districtData = districtData + "<option value='" + dataSet[i].name_th + "'>" + dataSet[i].name_th + "</option>"
+            //         }
+            //         $("#districtData").html(districtData);
+            //     }
+            // });
             $.ajax({
-            type: "get",
-            url: "/getAllProvinces",
-            success: function (dataSet) {
-                // alert(dataSet[0].name_th)
-                var optionData
-                for(let i = 0; i < dataSet.length; i++){
-                    optionData = optionData + "<option value='"+dataSet[i].name_th+"'>"+ dataSet[i].name_th +"</option>"
+                type: "get",
+                url: "/getAllGeo",
+                success: function (dataSet) {
+                    // alert(dataSet[0].name_th)
+                    var geoData = "<option value='none' id='geoValue'></option>";
+                    for (let i = 0; i < dataSet.length; i++) {
+                        geoData = geoData + "<option value='" + dataSet[i].name + "'>" + dataSet[i].name + "</option>"
+                    }
+                    $("#geoData").html(geoData);
+                    $('#provinceData').prop('disabled', 'disabled');
+                    $('#districtData').prop('disabled', 'disabled');
+                    $('#amphurData').prop('disabled', 'disabled');
                 }
-                $("select").html(optionData);
-            }
-        });
+            });
         }
+        geoEvent.addEventListener("change", function () {
+            if ($("#geoData option:selected").val() != "none") {
+                $('#provinceData').prop('disabled', false);
+            } else {
+                $('#provinceData').prop('disabled', 'disabled');
+                $('#districtData').prop('disabled', 'disabled');
+                $('#amphurData').prop('disabled', 'disabled');
+            }
+
+        });
     });
 </script>
 
 <body>
     <nav class="navbar navbar-expand-md navbar-light navBG sticky-top">
         <div class="container-fluid">
-          <!-- Insert LOGO on the nav -->
-          <a class="navbar-brand" href="/"><img src="img/NavLogo.png"></img></a>
-          <!-- Menu Icon -->
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <!-- Creating menus link -->
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <!-- ml-auto will move links to the right side of navbar -->
-            <ul class="navbar-nav ml-auto">
-              <!-- active is to highlight -->
-              <li class="nav-item active">
-                <a class="nav-link" href="/">หน้าหลัก</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/searchParking">ค้นหาที่จอดรถ</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/signUp">สนใจเป็นผู้ให้เช่าที่จอดรถ</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/signIn">เข้าสู่ระบบ</a>
-              </li>
-            </ul>
-          </div>
+            <!-- Insert LOGO on the nav -->
+            <a class="navbar-brand" href="/"><img src="img/NavLogo.png"></img></a>
+            <!-- Menu Icon -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Creating menus link -->
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <!-- ml-auto will move links to the right side of navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- active is to highlight -->
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">หน้าหลัก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/searchParking">ค้นหาที่จอดรถ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signUp">สนใจเป็นผู้ให้เช่าที่จอดรถ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signIn">เข้าสู่ระบบ</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-      </nav>
-    <div class="row centered">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 bg" style="color: gray;">__</div>
-        <div class="col-md-3"></div>
-    </div>
+    </nav>
     <div class="row centered">
         <div class="col-md-3"></div>
         <div class="col-md-6 bg">
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <h1 class="text-white">ลงทะเบียนผู้ให้เช่า</h1>
+                    <h1 class="text-white mt-3">ลงทะเบียนผู้ให้เช่า</h1>
                 </div>
                 <div class="col-md-1"></div>
             </div>
@@ -203,8 +250,7 @@
                 <div class="col-md-10">
                     <h5 class="text-white">Email</h5>
                     <input type="text" class="form-control mb-3" id='txtLocation' style="background-color: #eaeaea;"
-                        placeholder="Email" onfocus="this.placeholder = ''"
-                        onblur="this.placeholder = 'Email'" />
+                        placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" />
                 </div>
                 <div class="col-md-1"></div>
             </div>
@@ -214,18 +260,60 @@
                 <div class="col-md-10">
                     <h3 class="text-white mb-3">ข้อมูลสถานที่ให้บริการจอดรถ</h3>
                 </div>
-                </div>
+            </div>
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <h5 class="text-white">ชื่อบริการ <span><h6>(เช่น ลานจอดสมหมาย , แก้วใจบริการจอดรถ)</h6></span></h5>
+                    <h5 class="text-white">ชื่อบริการ <span>
+                            <h6>(เช่น ลานจอดสมหมาย , แก้วใจบริการจอดรถ)</h6>
+                        </span></h5>
                     <input type="text" class="form-control mb-3" id='txtLocation' style="background-color: #eaeaea;"
                         placeholder="ชื่อบริการที่จอดรถ" onfocus="this.placeholder = ''"
                         onblur="this.placeholder = 'ชื่อบริการที่จอดรถ'" />
                 </div>
                 <div class="col-md-1"></div>
             </div>
-            <select name="provinces" id="provinces"></select>
+            <div class="row mb-2">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <p class="text-white">ภูมิภาค</p>
+                    <select name="geos" id="geoData" style="width: 100%;">
+                        <option value="none"></option>
+                    </select>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <p class="text-white">จังหวัด</p>
+                    <select name="provinces" id="provinceData" style="width: 100%;">
+                        <option value="none"></option>
+                    </select>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <p class="text-white">อำเภอ</p>
+                    <select name="amphurs" id="amphurData" style="width: 100%;">
+                        <option value="none"></option>
+                    </select>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <p class="text-white">ตำบล</p>
+                    <select name="districts" id="districtData" style="width: 100%;">
+                        <option value="none"></option>
+                    </select>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
@@ -254,38 +342,38 @@
         <div class="col-sm-12"></div>
     </div>
 
-  <!--- Footer -->
-  <footer>
-    <div class="container-fluid mt-5 navBG">
-      <div class="row text-center">
-        <div class="col-md-4 mt-1">
-          <a href="/"> <img src="img/NavLogo.png"></img></a>
-          <hr class="dark">
-          <iframe
-            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FEz-Parking-100529508543981%2F&tabs=timeline&width=340&height=300&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
-            width="340" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
-            allowTransparency="true" allow="encrypted-media"></iframe>
-        </div>
-        <div class="col-md-4">
-          <hr class="dark">
-          <h5 class="text-dark">ติดต่อสอบถามเรา</h5>
-          <hr class="dark">
-          <p class="text-dark">Facebook: Ez Parking</p>
-        </div>
-        <div class="col-md-4">
-          <hr class="dark">
-          <h5 class="text-dark">ชั่วโมงการติดต่อ</h5>
-          <hr class="dark">
-          <p class="text-dark">จ-ศ: 9:00-16:00</p>
+    <!--- Footer -->
+    <footer>
+        <div class="container-fluid mt-5 navBG">
+            <div class="row text-center">
+                <div class="col-md-4 mt-1">
+                    <a href="/"> <img src="img/NavLogo.png"></img></a>
+                    <hr class="dark">
+                    <iframe
+                        src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FEz-Parking-100529508543981%2F&tabs=timeline&width=340&height=300&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+                        width="340" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+                        allowTransparency="true" allow="encrypted-media"></iframe>
+                </div>
+                <div class="col-md-4">
+                    <hr class="dark">
+                    <h5 class="text-dark">ติดต่อสอบถามเรา</h5>
+                    <hr class="dark">
+                    <p class="text-dark">Facebook: Ez Parking</p>
+                </div>
+                <div class="col-md-4">
+                    <hr class="dark">
+                    <h5 class="text-dark">ชั่วโมงการติดต่อ</h5>
+                    <hr class="dark">
+                    <p class="text-dark">จ-ศ: 9:00-16:00</p>
 
+                </div>
+                <div class="col-12">
+                    <hr class="dark">
+                    <h5 class="text-dark">&copy; ezparkingthailand.space</h5>
+                </div>
+            </div>
         </div>
-        <div class="col-12">
-          <hr class="dark">
-          <h5 class="text-dark">&copy; ezparkingthailand.space</h5>
-        </div>
-      </div>
-    </div>
-  </footer>
+    </footer>
 </body>
 
 </html>
