@@ -129,9 +129,10 @@ app.post("/login", function (req, res) {
     })
 });
 
-app.get("/getAllProvinces", function (req, res) {
-    const sql = "SELECT name_th FROM `provinces`";
-    con.query(sql, function (err, result, fields) {
+app.get("/getAllProvinces/:id", function (req, res) {
+    var id = req.params.id;
+    const sql = "SELECT id,name_th FROM `provinces` where geography_id = ?;";
+    con.query(sql,[id], function (err, result, fields) {
         if (err) {
             // console.log(err)
             res.status(500).send("Server error");
@@ -142,9 +143,11 @@ app.get("/getAllProvinces", function (req, res) {
     });
 });
 
-app.get("/getAllAmphures", function (req, res) {
-    const sql = "SELECT name_th FROM `amphures`";
-    con.query(sql, function (err, result, fields) {
+
+app.get("/getAllAmphures/:id", function (req, res) {
+    var id = req.params.id;
+    const sql = "SELECT id,name_th FROM `amphures` where province_id =?";
+    con.query(sql,[id], function (err, result, fields) {
         if (err) {
             // console.log(err)
             res.status(500).send("Server error");
@@ -155,9 +158,10 @@ app.get("/getAllAmphures", function (req, res) {
     });
 });
 
-app.get("/getAllDistricts", function (req, res) {
-    const sql = "SELECT name_th FROM `districts`";
-    con.query(sql, function (err, result, fields) {
+app.get("/getAllDistricts/:id", function (req, res) {
+    var id = req.params.id;
+    const sql = "SELECT id,name_th FROM `districts` where amphure_id =?";
+    con.query(sql,[id], function (err, result, fields) {
         if (err) {
             // console.log(err)
             res.status(500).send("Server error");
@@ -169,7 +173,7 @@ app.get("/getAllDistricts", function (req, res) {
 });
 
 app.get("/getAllGeo", function (req, res) {
-    const sql = "SELECT name FROM `geographies`";
+    const sql = "SELECT id,name FROM `geographies`";
     con.query(sql, function (err, result, fields) {
         if (err) {
             // console.log(err)
