@@ -31,7 +31,7 @@
             let phone = $("#txtPhone").val();
             let firstname = $("#txtFirstname").val();
             let lastname = $("#txtLastname").val();
-            let activation = 'ไม่ว่าง';
+            let activation = 'ปิด';
             let actualPassword;
             if (password == confirmPassword && username != '' && password != '' && location != '' && phone != '') {
                 actualPassword = password;
@@ -76,7 +76,7 @@
                     // alert(dataSet[0].name_th)
                     var geoData = "<option value='none' id='geoValue'></option>";
                     for (let i = 0; i < dataSet.length; i++) {
-                        geoData = geoData + "<option value='" + dataSet[i].id + "'>" + dataSet[i].name + "</option>"
+                        geoData = geoData + "<option value='" + dataSet[i].id + dataSet[i].name + "'>" + dataSet[i].name + "</option>"
                     }
                     $("#geoData").html(geoData);
                     $('#provinceData').prop('disabled', 'disabled');
@@ -88,8 +88,8 @@
         geoEvent.addEventListener("change", function () {
             if ($("#geoData option:selected").val() != "none") {
                 $('#provinceData').prop('disabled', false);
-                geoID = $("#geoData option:selected").val();
-
+                geoID = $("#geoData option:selected").val().substring(0, 1);
+                alert(geoID)
                 $.ajax({
                     type: "get",
                     url: "/getAllProvinces/" + geoID,
@@ -324,6 +324,16 @@
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
+                    <h5 class="text-white">คำอธิบายบริการ</h5>
+                    <input type="text" class="form-control mb-3" id='txtLocation' style="background-color: #eaeaea;"
+                        placeholder="คำอธิบายบริการ" onfocus="this.placeholder = ''"
+                        onblur="this.placeholder = 'คำอธิบายบริการ'" />
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
                     <h5 class="text-white">จำนวนรถยนต์ที่สามารถรองรับได้ (โปรดระบุเป็นตัวเลข)<span>
                             <h6 style="color: rgba(255, 235, 205, 0.555);">(เช่น รถยนต์เก๋ง/กระบะโดยสารทั่วไป , รถซีดาน 4 ล้อ , รถโดยสารได้ไม่เกิน 7 คน)</h6>
                         </span></h5>
@@ -375,7 +385,7 @@
                 <div class="col-md-1"></div>
             </div>
 
-            <div class="row">
+            <div class="row mt-3">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
                     <button class="btn btn-success" id="btnSignup" style="width: 100%;">ลงทะเบียน</button>

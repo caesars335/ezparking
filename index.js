@@ -3,6 +3,7 @@ const path = require("path");
 const body_parser = require("body-parser");
 const mysql = require("mysql");
 const bcrypt = require('bcrypt');
+const favicon = require('serve-favicon');
 const saltRounds = 10;
 
 let config = {
@@ -15,9 +16,11 @@ let config = {
 const app = express();
 const con = mysql.createConnection(config,{multipleStatements: true});
 
+
 app.use(body_parser.urlencoded({ extended: true }));
 app.use(body_parser.json());
 app.use(express.static(__dirname + '/public'));
+app.use(favicon(path.join(__dirname, 'public', 'img', 'logoTitle.ico')));
 
 app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "./views/index.html"))
@@ -61,7 +64,7 @@ app.get("/getStatus", function (req, res) {
 
 
 app.put("/addUser", function (req, res) {
-    const { Username, Password , Firstname , Lastname , Location, Phone, Activation} = req.body
+    const { Username, Password , Firstname , Lastname , Location, Phone, Activation, Province, Amphur, District, Description} = req.body
 
     const sql = "SELECT * FROM account WHERE Username = ?"
     con.query(sql, [Username], function (err, result, fields) {
@@ -71,9 +74,9 @@ app.put("/addUser", function (req, res) {
         }
         else {
             if (!result[0]) {
-                const sql2 = "INSERT INTO `account` ( `Username`, `Password`, `Firstname`, `Lastname`, `Location`, `Phone` ,`Activation`) VALUES (?, ?, ?, ? ,?, ? ,?);"
+                const sql2 = "INSERT INTO `account` ( `Username`, `Password`, `Firstname`, `Lastname`, `Location`, `Phone` ,`Activation`,`Province`,`Amphur`,`District`,`Description`) VALUES (?, ?, ?, ? ,?, ? ,? ,? ,? ,? ,?);"
                 bcrypt.hash(Password, saltRounds, function (err, hash) {
-                    con.query(sql2, [Username, hash, Firstname, Lastname,  Location, Phone, Activation], function (err2, result2, fields) {
+                    con.query(sql2, [Username, hash, Firstname, Lastname,  Location, Phone, Activation , Province, Amphur, District, Description], function (err2, result2, fields) {
                         if (err2) {
                             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง")
                             console.log(err2)
