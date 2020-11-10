@@ -2,149 +2,236 @@
 <html lang="th">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
-    <title>เข้าสู่ระบบผู้ให้เช่า</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <title>เข้าสู่ระบบผู้ให้เช่า</title>
 </head>
 <script>
-    $(document).ready(function () {
-        loadData();
+  $(document).ready(function () {
+    loadData();
 
-        function loadData() {
-            if (localStorage.UserID) {
-                window.location.replace("/toggleStatus");
-            }
-        }
-        $('#btnSignin').click(function () {
-            let username = $('#txtUsername').val();
-            let password = $('#txtPassword').val();
-            if (username != '' && password != '') {
-                $.ajax({
-                    method: "POST",
-                    url: "/login",
-                    data: { Username: username, Password1: password },
-                }).done(function (data, state, xhr) {
-                    if (data[0].Username != undefined && data[0].Username != null && data[0].Username != '' && data[0].Username != '0') {
-                        localStorage.UserID = data[0].UserID;
-                        window.location.replace('/toggleStatus')
-                    } else {
-                        alert("รหัสผ่านไม่ถูกต้อง")
-                    }
-
-                }).fail(function (xhr, state, error) {
-                    alert("xhr.responseText")
-                })
-            } else {
-                alert('กรอกข้อมูลให้ครบถ้วน')
-            }
-
-        })
-
+    $("#asTenant").click(function (e) {
+      $("#divTenant").show();
+      $("#divRenter").hide();
+      $("#asTenant").css({
+        'background-color': '#007bff',
+        'color': 'white'
+      });
+      $("#asRenter").css({
+        'background-color': '#6c757d',
+        'color': 'white'
+      });
     });
+
+    $("#asRenter").click(function (e) {
+      $("#divRenter").show();
+      $("#divTenant").hide();
+      $("#asRenter").css({
+        'background-color': '#007bff',
+        'color': 'white'
+      });
+      $("#asTenant").css({
+        'background-color': '#6c757d',
+        'color': 'white'
+      });
+    });
+    function loadData() {
+      $("#divTenant").hide();
+      $("#asRenter").css({
+        'background-color': '#007bff',
+        'color': 'white'
+      });
+      if (localStorage.UserID) {
+        window.location.replace("/toggleStatus");
+      }
+    }
+    $('#btnSignin').click(function () {
+      let username = $('#txtUsername').val();
+      let password = $('#txtPassword').val();
+      if (username != '' && password != '') {
+        $.ajax({
+          method: "POST",
+          url: "/login",
+          data: { Username: username, Password1: password },
+        }).done(function (data, state, xhr) {
+          if (data[0].Username != undefined && data[0].Username != null && data[0].Username != '' && data[0].Username != '0') {
+            localStorage.UserID = data[0].UserID;
+            window.location.replace('/toggleStatus')
+          } else {
+            alert("รหัสผ่านไม่ถูกต้อง")
+          }
+
+        }).fail(function (xhr, state, error) {
+          alert("xhr.responseText")
+        })
+      } else {
+        alert('กรอกข้อมูลให้ครบถ้วน')
+      }
+
+    })
+
+  });
 </script>
 
 <body>
-    <nav class="navbar navbar-expand-md navbar-light navBG sticky-top">
-        <div class="container-fluid">
-          <!-- Insert LOGO on the nav -->
-          <a class="navbar-brand" href="/"><img src="img/NavLogo.png"></img></a>
-          <!-- Menu Icon -->
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <!-- Creating menus link -->
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <!-- ml-auto will move links to the right side of navbar -->
-            <ul class="navbar-nav ml-auto">
-              <!-- active is to highlight -->
-              <li class="nav-item ">
-                <a class="nav-link" href="/">หน้าหลัก</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/signUpMember">สมัครสมาชิก</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/signUp">สนใจเป็นผู้ให้เช่าที่จอดรถ</a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="/signIn">เข้าสู่ระบบ</a>
-              </li>
-            </ul>
-          </div>
+  <nav class="navbar navbar-expand-md navbar-light navBG sticky-top">
+    <div class="container-fluid">
+      <!-- Insert LOGO on the nav -->
+      <a class="navbar-brand" href="/"><img src="img/NavLogo.png"></img></a>
+      <!-- Menu Icon -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- Creating menus link -->
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <!-- ml-auto will move links to the right side of navbar -->
+        <ul class="navbar-nav ml-auto">
+          <!-- active is to highlight -->
+          <li class="nav-item ">
+            <a class="nav-link" href="/">หน้าหลัก</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/signUpMember">สมัครสมาชิก</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/signUp">สนใจเป็นผู้ให้เช่าที่จอดรถ</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/signIn">เข้าสู่ระบบ</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="row centered">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg center" style="color: gray;">_</div>
+    <div class="col-md-3"></div>
+  </div>
+  <div class="row centered">
+    <div class="col-md-3"></div>
+    <div class="col-md-3 bg" style="background-color: gray;"><button id="asRenter" class="btn"
+        style="width: 100%;">เข้าสู่ระบบ เป็น ผู้ใช้งานทั่วไป</button></div>
+    <div class="col-md-3 bg" style="background-color: gray;"><button id="asTenant" class="btn"
+        style="width: 100%;">เข้าสู่ระบบ เป็น ผู้ให้เช่าที่จอดรถ</button></div>
+    <div class="col-md-3"></div>
+  </div>
+  <div class="row centered">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg center" style="color: gray;">_</div>
+    <div class="col-md-3"></div>
+  </div>
+  <div class="row centered" id="divTenant">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <h1 class="text-white">เข้าสู่ระบบ ผู้ให้เช่า</h1>
         </div>
-      </nav>
-    <div class="row centered">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 bg" style="color: gray;">__</div>
-        <div class="col-md-3"></div>
-    </div>
-    <div class="row centered">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 bg">
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <h1 class="text-white">เข้าสู่ระบบผู้ให้เช่า</h1>
-                </div>
-                <div class="col-md-1"></div>
-            </div>
-            <div class="row ">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                  <h5 class="text-white">ชื่อผู้ใช้ (Username)</h5>
-                    <input type="text" class="form-control mb-3" id="txtUsername" style="background-color: #eaeaea;"
-                        placeholder="ชื่อผู้ใช้" onfocus="this.placeholder = ''"
-                        onblur="this.placeholder = 'ชื่อผู้ใช้'" />
-                </div>
-                <div class="col-md-1"></div>
-            </div>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                  <h5 class="text-white">รหัสผ่าน</h5>
-                    <input type="password" class="form-control mb-3" id='txtPassword' style="background-color: #eaeaea;"
-                        placeholder="รหัสผ่าน" onfocus="this.placeholder = ''" onblur="this.placeholder = 'รหัสผ่าน'" />
-                </div>
-                <div class="col-md-1"></div>
-            </div>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <button class="btn btn-primary" id="btnSignin" style="width: 100%;">เข่าสู่ระบบ</button>
-                </div>
-                <div class="col-md-1"></div>
-            </div>
-            <div class="row">
-              <div class="col-md-1"></div>
-              <div class="col-md-10">
-                  <p class="text-white">*หากลืมรหัสผ่านโปรดติดต่อเราทางเพจ Facebook: Ez Parking</p>
-              </div>
-              <div class="col-md-1"></div>
-          </div>
+        <div class="col-md-1"></div>
+      </div>
+      <div class="row ">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <h5 class="text-white">ชื่อผู้ใช้ (Username)</h5>
+          <input type="text" class="form-control mb-3" id="txtUsername" style="background-color: #eaeaea;"
+            placeholder="ชื่อผู้ใช้" onfocus="this.placeholder = ''" onblur="this.placeholder = 'ชื่อผู้ใช้'" />
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-1"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <h5 class="text-white">รหัสผ่าน</h5>
+          <input type="password" class="form-control mb-3" id='txtPassword' style="background-color: #eaeaea;"
+            placeholder="รหัสผ่าน" onfocus="this.placeholder = ''" onblur="this.placeholder = 'รหัสผ่าน'" />
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <button class="btn btn-primary" id="btnSignin" style="width: 100%;">เข้าสู่ระบบ</button>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <p class="text-white">*หากลืมรหัสผ่านโปรดติดต่อเราทางเพจ Facebook: Ez Parking</p>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
     </div>
-    <div class="row centered">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 bg" style="color: gray;">__</div>
-        <div class="col-md-3"></div>
+    <div class="col-md-3"></div>
+  </div>
+  <div class="row centered" id="divRenter">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <h1 class="text-white">เข้าสู่ระบบ ผู้ใช้งานทั่วไป</h1>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+      <div class="row ">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <h5 class="text-white">ชื่อผู้ใช้ (Username)</h5>
+          <input type="text" class="form-control mb-3" id="txtUsername" style="background-color: #eaeaea;"
+            placeholder="ชื่อผู้ใช้" onfocus="this.placeholder = ''" onblur="this.placeholder = 'ชื่อผู้ใช้'" />
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <h5 class="text-white">รหัสผ่าน</h5>
+          <input type="password" class="form-control mb-3" id='txtPassword' style="background-color: #eaeaea;"
+            placeholder="รหัสผ่าน" onfocus="this.placeholder = ''" onblur="this.placeholder = 'รหัสผ่าน'" />
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <button class="btn btn-primary" id="btnSignin" style="width: 100%;">เข้าสู่ระบบ</button>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <p class="text-white">*หากลืมรหัสผ่านโปรดติดต่อเราทางเพจ Facebook: Ez Parking</p>
+        </div>
+        <div class="col-md-1"></div>
+      </div>
     </div>
-    <div class="row  mt-5">
-      <div class="col-sm-12"></div>
+    <div class="col-md-3"></div>
+  </div>
+  <div class="row centered">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 bg" style="color: gray;">__</div>
+    <div class="col-md-3"></div>
   </div>
   <div class="row  mt-5">
     <div class="col-sm-12"></div>
-</div>
-      <!--- Footer -->
+  </div>
+  <div class="row  mt-5">
+    <div class="col-sm-12"></div>
+  </div>
+  <!--- Footer -->
   <footer>
     <div class="container-fluid mt-5 navBG">
       <div class="row text-center">
@@ -180,20 +267,20 @@
 
 </html>
 <style>
-    body {
-        display: table;
-        width: 100%;
-        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/parkingspace.jpg');
-        background-position: center top;
-        height: 350px;
-    }
+  body {
+    display: table;
+    width: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/parkingspace.jpg');
+    background-position: center top;
+    height: 350px;
+  }
 
-    .bg {
-        background-color: gray
-    }
+  .bg {
+    background-color: gray
+  }
 
-    .centered {
-        position: relative;
-        top: 100px;
-    }
+  .centered {
+    position: relative;
+    top: 100px;
+  }
 </style>
