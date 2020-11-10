@@ -143,6 +143,26 @@
 
     });
 
+    CurrentTable2 = $('.table2').DataTable({
+      "searching": true,
+      "lengthChange": true,
+      "paging": true,
+      "ordering": true,
+      "info": true,
+      responsive: true,
+      deferRender: true,
+      columns: [
+        { data: "RequestID", title: "หมายเลขคำแจ้งจอด" },
+        { data: "Day", title: "วันที่" },
+        { data: "Month", title: "เดือน" },
+        { data: "Year", title: "ปี" },
+        { data: "Time", title: "วันที่" },
+        { data: "Confirmation", title: "การตอบรับ" }
+
+      ],
+
+    });
+
     $.ajax({
       type: "get",
       url: "/getStatus/",
@@ -169,7 +189,7 @@
         });
         $(".btnSearchOk").click(function () {
           const txtYear = $("#txtYear").val();
-          const txtMonth = $("#txtYear").val();
+          const txtMonth = $("#txtMonth").val();
           const txtTime = $("#txtTime option:selected").val();
           const txtDay = $("#txtDay").val();
           const txtFirstname = memberFirstname;
@@ -181,11 +201,25 @@
             data: { UserID: UserID, MemberID: memberID, RequesterFirstname: txtFirstname, RequesterLastname: txtLastname, Day: txtDay, Month: txtMonth, Year: txtYear, Time: txtTime, Confirmation: confirmation }
           }).done(function (data, state, xhr) {
             alert("ส่งคำแจ้งเรียบร้อยแล้ว ท่านสามารถตรวจสอบสถานะได้ที่แถบ 'ตรวจสอบคำขอ'")
+            window.location.replace("/searchParking");
           }).fail(function (xhr, state, error) {
             alert("xhr")
           })
           $("#modalReserve").modal("hide");
         });
+      }
+    });
+
+    $.ajax({
+      type: "get",
+      url: "/getRequestInfo/" + memberID,
+      success: function (dataSet) {
+        console.log(dataSet)
+
+        //clear DataTable
+        CurrentTable2.clear();
+        //display modified JSON in DataTable
+        CurrentTable2.rows.add(dataSet).draw();
       }
     });
 

@@ -76,6 +76,20 @@ app.get("/getMemberInfo/:id", function (req, res) {
     });
 });
 
+app.get("/getRequestInfo/:id", function (req, res) {
+    var id = req.params.id;
+    const sql = "SELECT RequestID, RequesterFirstname, RequestierLastname , Day, Month, Year, Time,Confirmation FROM `request` where MemberID = ?;";
+    con.query(sql, [id], function (err, result, fields) {
+        if (err) {
+            // console.log(err)
+            res.status(500).send("Server error");
+        }
+        else {
+            res.json(result);
+        }
+    });
+});
+
 app.post("/sendRequest", function (req, res){
     var { UserID,MemberID, RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation} = req.body
     const sql = "INSERT INTO `request` (`UserID`,`MemberID`,`RequesterFirstname`, `RequestierLastname`, `Day`, `Month`, `Year`, `Time`, `Confirmation`) VALUES (?,?,?,?,?,?,?,?,?);";
