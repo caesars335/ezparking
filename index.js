@@ -64,7 +64,7 @@ app.get("/getStatus", function (req, res) {
 
 
 app.put("/addUser", function (req, res) {
-    const { Username, Password , Firstname , Lastname , Location, Phone, Activation, Province, Amphur, District, Description} = req.body
+    const { Username, Password , Firstname , Lastname , Location, Phone, Activation, Province, Amphur, District, Description, Email, Geo, SupportCar} = req.body
 
     const sql = "SELECT * FROM account WHERE Username = ?"
     con.query(sql, [Username], function (err, result, fields) {
@@ -74,9 +74,9 @@ app.put("/addUser", function (req, res) {
         }
         else {
             if (!result[0]) {
-                const sql2 = "INSERT INTO `account` ( `Username`, `Password`, `Firstname`, `Lastname`, `Location`, `Phone` ,`Activation`,`Province`,`Amphur`,`District`,`Description`) VALUES (?, ?, ?, ? ,?, ? ,? ,? ,? ,? ,?);"
+                const sql2 = "INSERT INTO `account` ( `Username`, `Password`, `Firstname`, `Lastname`, `Location`, `Phone` ,`Activation`,`Province`,`Amphur`,`District`,`Description`,`Email`,`Geo`,`SupportCar`) VALUES (?, ?, ?, ? ,?, ? ,? ,? ,? ,? ,?,?,?,?);"
                 bcrypt.hash(Password, saltRounds, function (err, hash) {
-                    con.query(sql2, [Username, hash, Firstname, Lastname,  Location, Phone, Activation , Province, Amphur, District, Description], function (err2, result2, fields) {
+                    con.query(sql2, [Username, hash, Firstname, Lastname,  Location, Phone, Activation , Province, Amphur, District, Description, Email, Geo,SupportCar], function (err2, result2, fields) {
                         if (err2) {
                             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง")
                             console.log(err2)

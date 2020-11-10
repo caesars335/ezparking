@@ -42,13 +42,16 @@
             let firstname = $("#txtFirstname").val();
             let lastname = $("#txtLastname").val();
             let activation = 'ปิด';
+            let supportCar = $("#txtSupportCar").val();
+            let email = $("#txtEmail").val();
+            let description = $("#txtDescription").val();
             let actualPassword;
-            if (password == confirmPassword && username != '' && password != '' && location != '' && phone != '') {
+            if (password == confirmPassword && username != '' && password != '' && location != '' && phone != '' && supportCar != '' && email != '' && description != '') {
                 actualPassword = password;
                 $.ajax({
                     method: "PUT",
                     url: "/addUser",
-                    data: { Username: username, Password: password, Firstname: firstname, Lastname: lastname, Location: location, Phone: phone, Activation: activation }
+                    data: { Username: username, Password: password, Firstname: firstname, Lastname: lastname, Location: location, Phone: phone, Activation: activation ,Province: provinceName, Amphur: amphurName, District: districtName, Description: description, Email: email, Geo: geoName, SupportCar:supportCar}
                 }).done(function (data, state, xhr) {
                     if (data[0].Username != undefined && data[0].Username != null && data[0].Username != '') {
                         localStorage.UserID = data[0].UserID;
@@ -70,6 +73,12 @@
                 } else if (location == '') {
                     alert("กรุณากรอกชื่อตำแหน่งที่จอดรถ")
                 } else if (phone == '') {
+                    alert("กรุณากรอกเบอร์มือถือ")
+                } else if (email == '') {
+                    alert("กรุณากรอกเบอร์มือถือ")
+                } else if (supportCar == '') {
+                    alert("กรุณากรอกเบอร์มือถือ")
+                } else if (description == '') {
                     alert("กรุณากรอกเบอร์มือถือ")
                 } else {
                     alert("กรุณากรอกข้อมูลให้ครบถ้วน")
@@ -105,7 +114,7 @@
                 $('#provinceData').prop('disabled', false);
                 geoID = $("#geoData option:selected").val().substring(0, 1);
                 geoName = $("#geoData option:selected").val().substring(1);
-                console.log(geoID + " " + geoName)
+                // console.log(geoID + " " + geoName)
                 $('#provinceData').val("");
                 $('#amphurData').val("");
                 $('#districtData').val("");
@@ -137,7 +146,7 @@
                 $('#districtData').val("");
                 provinceID = valProvince.id;
                 provinceName = valProvince.name;
-                console.log(provinceID + " " + provinceName);
+                // console.log(provinceID + " " + provinceName);
             }
             $.ajax({
                 type: "get",
@@ -163,8 +172,8 @@
                 $('#districtData').prop('disabled', false);
                 $('#districtData').val("");
                 amphurID = valAmphur.id;
-                amphureName = valAmphur.name;
-                console.log(amphurID + " " + amphureName);
+                amphurName = valAmphur.name;
+                // console.log(amphurID + " " + amphureName);
             }
             $.ajax({
                 type: "get",
@@ -186,8 +195,8 @@
             var valDistrict = $.parseJSON(strDistrict);
             if ($("#districtData option:selected").val() != "none") {
                 $('#btnSignup').prop('disabled', false);
-                districtID = $("#districtData option:selected").val().substring(0, 1);
-                districtName = $("#districtData option:selected").val().substring(1);
+                districtID = valDistrict.id;
+                districtName = valDistrict.name;
             }
         });
     });
@@ -310,7 +319,7 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
                     <h5 class="text-white">Email</h5>
-                    <input type="email" class="form-control mb-3" id='txtLocation' style="background-color: #eaeaea;"
+                    <input type="email" class="form-control mb-3" id='txtEmail' style="background-color: #eaeaea;"
                         placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" />
                 </div>
                 <div class="col-md-1"></div>
@@ -338,7 +347,7 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
                     <h5 class="text-white">คำอธิบายบริการ</h5>
-                    <input type="text" class="form-control mb-3" id='txtLocation' style="background-color: #eaeaea;"
+                    <input type="text" class="form-control mb-3" id='txtDescription' style="background-color: #eaeaea;"
                         placeholder="คำอธิบายบริการ" onfocus="this.placeholder = ''"
                         onblur="this.placeholder = 'คำอธิบายบริการ'" />
                 </div>
@@ -351,7 +360,7 @@
                             <h6 style="color: rgba(255, 235, 205, 0.555);">(เช่น รถยนต์เก๋ง/กระบะโดยสารทั่วไป , รถซีดาน
                                 4 ล้อ , รถโดยสารได้ไม่เกิน 7 คน)</h6>
                         </span></h5>
-                    <input type="text" class="form-control mb-3" id='txtLocation' style="background-color: #eaeaea;"
+                    <input type="text" class="form-control mb-3" id='txtSupportCar' style="background-color: #eaeaea;"
                         placeholder="จำนวนที่รองรับได้ (โปรดระบุเป็นตัวเลข)" onfocus="this.placeholder = ''"
                         onblur="this.placeholder = 'จำนวนรถยนต์ที่รองรับได้ (โปรดระบุเป็นตัวเลข)'" />
                 </div>
