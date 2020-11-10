@@ -26,7 +26,7 @@
 </head>
 <script>
   var memberID = localStorage.MemberID
-  var currentID, UserID;
+  var currentID, UserID, UserLocation;
   var memberFirstname, memberLastname;
   $(document).ready(function () {
     $("#tabRequest").hide();
@@ -153,6 +153,7 @@
       deferRender: true,
       columns: [
         { data: "RequestID", title: "หมายเลขคำแจ้งจอด" },
+        { data: "Location", title: "ชื่อบริการ" },
         { data: "Day", title: "วันที่" },
         { data: "Month", title: "เดือน" },
         { data: "Year", title: "ปี" },
@@ -182,6 +183,7 @@
           var str = $(this).val();
           var val = $.parseJSON(str);
           UserID = val.UserID
+          UserLocation = val.Location
           $("#txtYear").val(current_datetime.getFullYear());
           $("#txtMonth").val((current_datetime.getMonth() + 1));
           $("#txtDay").val(current_datetime.getDate());
@@ -198,7 +200,7 @@
           $.ajax({
             method: "POST",
             url: "/sendRequest",
-            data: { UserID: UserID, MemberID: memberID, RequesterFirstname: txtFirstname, RequesterLastname: txtLastname, Day: txtDay, Month: txtMonth, Year: txtYear, Time: txtTime, Confirmation: confirmation }
+            data: { UserLocation: UserLocation, UserID: UserID, MemberID: memberID, RequesterFirstname: txtFirstname, RequesterLastname: txtLastname, Day: txtDay, Month: txtMonth, Year: txtYear, Time: txtTime, Confirmation: confirmation }
           }).done(function (data, state, xhr) {
             alert("ส่งคำแจ้งเรียบร้อยแล้ว ท่านสามารถตรวจสอบสถานะได้ที่แถบ 'ตรวจสอบคำขอ'")
             window.location.replace("/searchParking");

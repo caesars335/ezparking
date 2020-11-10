@@ -78,7 +78,7 @@ app.get("/getMemberInfo/:id", function (req, res) {
 
 app.get("/getRequestInfo/:id", function (req, res) {
     var id = req.params.id;
-    const sql = "SELECT RequestID, RequesterFirstname, RequestierLastname , Day, Month, Year, Time,Confirmation FROM `request` where MemberID = ?;";
+    const sql = "SELECT Location,RequestID, RequesterFirstname, RequestierLastname , Day, Month, Year, Time,Confirmation FROM `request` where MemberID = ?;";
     con.query(sql, [id], function (err, result, fields) {
         if (err) {
             // console.log(err)
@@ -91,9 +91,9 @@ app.get("/getRequestInfo/:id", function (req, res) {
 });
 
 app.post("/sendRequest", function (req, res){
-    var { UserID,MemberID, RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation} = req.body
-    const sql = "INSERT INTO `request` (`UserID`,`MemberID`,`RequesterFirstname`, `RequestierLastname`, `Day`, `Month`, `Year`, `Time`, `Confirmation`) VALUES (?,?,?,?,?,?,?,?,?);";
-    con.query(sql, [ UserID,MemberID, RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation], function (err, result, fields) {
+    var { UserLocation, UserID,MemberID, RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation} = req.body
+    const sql = "INSERT INTO `request` (`Location`,`UserID`,`MemberID`,`RequesterFirstname`, `RequestierLastname`, `Day`, `Month`, `Year`, `Time`, `Confirmation`) VALUES (?,?,?,?,?,?,?,?,?,?);";
+    con.query(sql, [ UserLocation, UserID,MemberID, RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation], function (err, result, fields) {
         if (err) {
             res.status(500).send("Server error");
             console.log(err)
