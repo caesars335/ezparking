@@ -7,14 +7,14 @@ const favicon = require('serve-favicon');
 const saltRounds = 10;
 
 let config = {
-    host    : 'localhost',
-    user    : 'root',
+    host: 'localhost',
+    user: 'root',
     password: '',
     database: 'ezparking'
-  };
+};
 
 const app = express();
-const con = mysql.createConnection(config,{multipleStatements: true});
+const con = mysql.createConnection(config, { multipleStatements: true });
 
 
 app.use(body_parser.urlencoded({ extended: true }));
@@ -26,29 +26,29 @@ app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "./views/index.html"))
 });
 
-app.get("/signUp", function (req, res){
+app.get("/signUp", function (req, res) {
     res.sendFile(path.join(__dirname, "./views/signUp.html"))
 });
 
-app.get("/signIn", function (req, res){
+app.get("/signIn", function (req, res) {
     res.sendFile(path.join(__dirname, "./views/signIn.html"))
 });
 
-app.get("/searchParking", function (req, res){
+app.get("/searchParking", function (req, res) {
     res.sendFile(path.join(__dirname, "./views/searchParking.html"))
 });
 
-app.get("/toggleStatus", function (req, res){
+app.get("/toggleStatus", function (req, res) {
     res.sendFile(path.join(__dirname, "./views/toggleStatus.html"))
 });
 
-app.get("/test", function (req, res){
-    res.sendFile(path.join(__dirname, "./views/guestHome.html"))
+app.get("/signUpMember", function (req, res) {
+    res.sendFile(path.join(__dirname, "./views/signUpMember.html"))
 });
 
 app.get("/getStatus", function (req, res) {
 
-    const sql = "SELECT Location, Activation FROM account";
+    const sql = "SELECT UserID, Location, Activation FROM account";
     con.query(sql, function (err, result, fields) {
         if (err) {
             // console.log(err)
@@ -62,9 +62,47 @@ app.get("/getStatus", function (req, res) {
     });
 })
 
+app.put("/addMember", function (req, res) {
+    const { Username, Password, Firstname, Lastname, Phone, Email } = req.body
+
+    const sql = "SELECT * FROM member WHERE Username = ?"
+    con.query(sql, [Username], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง")
+            console.log(err)
+        }
+        else {
+            if (!result[0]) {
+                const sql2 = "INSERT INTO `member` ( `Username`, `Password`, `Firstname`, `Lastname`, `Phone`,`Email`) VALUES (?, ?, ?, ? ,?, ?);"
+                bcrypt.hash(Password, saltRounds, function (err, hash) {
+                    con.query(sql2, [Username, hash, Firstname, Lastname, Phone, Email], function (err2, result2, fields) {
+                        if (err2) {
+                            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง")
+                            console.log(err2)
+                        }
+                        else {
+                            const sql2 = "SELECT * FROM account WHERE Username = ?"
+                            con.query(sql2, [Username], function (err2, result2, fields2) {
+                                if (err2) {
+                                    res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+                                    console.log(err2)
+                                } else {
+                                    res.send(result2);
+                                }
+                            })
+
+                        }
+                    });
+                });
+            } else {
+                res.send('0')
+            }
+        }
+    })
+});
 
 app.put("/addUser", function (req, res) {
-    const { Username, Password , Firstname , Lastname , Location, Phone, Activation, Province, Amphur, District, Description, Email, Geo, SupportCar} = req.body
+    const { Username, Password, Firstname, Lastname, Location, Phone, Activation, Province, Amphur, District, Description, Email, Geo, SupportCar, FreeSpace } = req.body
 
     const sql = "SELECT * FROM account WHERE Username = ?"
     con.query(sql, [Username], function (err, result, fields) {
@@ -74,9 +112,9 @@ app.put("/addUser", function (req, res) {
         }
         else {
             if (!result[0]) {
-                const sql2 = "INSERT INTO `account` ( `Username`, `Password`, `Firstname`, `Lastname`, `Location`, `Phone` ,`Activation`,`Province`,`Amphur`,`District`,`Description`,`Email`,`Geo`,`SupportCar`) VALUES (?, ?, ?, ? ,?, ? ,? ,? ,? ,? ,?,?,?,?);"
+                const sql2 = "INSERT INTO `account` ( `Username`, `Password`, `Firstname`, `Lastname`, `Location`, `Phone` ,`Activation`,`Province`,`Amphur`,`District`,`Description`,`Email`,`Geo`,`SupportCar`,`FreeSpace`) VALUES (?, ?, ?, ? ,?, ? ,? ,? ,? ,? ,?,?,?,?,?);"
                 bcrypt.hash(Password, saltRounds, function (err, hash) {
-                    con.query(sql2, [Username, hash, Firstname, Lastname,  Location, Phone, Activation , Province, Amphur, District, Description, Email, Geo,SupportCar], function (err2, result2, fields) {
+                    con.query(sql2, [Username, hash, Firstname, Lastname, Location, Phone, Activation, Province, Amphur, District, Description, Email, Geo, SupportCar, FreeSpace], function (err2, result2, fields) {
                         if (err2) {
                             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง")
                             console.log(err2)
@@ -135,7 +173,7 @@ app.post("/login", function (req, res) {
 app.get("/getAllProvinces/:id", function (req, res) {
     var id = req.params.id;
     const sql = "SELECT id,name_th FROM `provinces` where geography_id = ?;";
-    con.query(sql,[id], function (err, result, fields) {
+    con.query(sql, [id], function (err, result, fields) {
         if (err) {
             // console.log(err)
             res.status(500).send("Server error");
@@ -150,7 +188,7 @@ app.get("/getAllProvinces/:id", function (req, res) {
 app.get("/getAllAmphures/:id", function (req, res) {
     var id = req.params.id;
     const sql = "SELECT id,name_th FROM `amphures` where province_id =?";
-    con.query(sql,[id], function (err, result, fields) {
+    con.query(sql, [id], function (err, result, fields) {
         if (err) {
             // console.log(err)
             res.status(500).send("Server error");
@@ -164,7 +202,7 @@ app.get("/getAllAmphures/:id", function (req, res) {
 app.get("/getAllDistricts/:id", function (req, res) {
     var id = req.params.id;
     const sql = "SELECT id,name_th FROM `districts` where amphure_id =?";
-    con.query(sql,[id], function (err, result, fields) {
+    con.query(sql, [id], function (err, result, fields) {
         if (err) {
             // console.log(err)
             res.status(500).send("Server error");

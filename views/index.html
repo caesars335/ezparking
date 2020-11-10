@@ -21,7 +21,10 @@
       window.location.replace("/signUp");
     });
     $('#btnCheckStatus').click(function () {
-      window.location.replace("/searchParking");
+      window.location.replace("/signUpMember");
+    });
+    $('#btnSignIn').click(function () {
+      window.location.replace("/signIn");
     });
     loadData();
 
@@ -51,7 +54,7 @@
             <a class="nav-link" href="/">หน้าหลัก</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/searchParking">ค้นหาที่จอดรถ</a>
+            <a class="nav-link" href="/signUpMember">สมัครสมาชิก</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/signUp">สนใจเป็นผู้ให้เช่าที่จอดรถ</a>
@@ -64,19 +67,25 @@
     </div>
   </nav>
   <div class="guesthome-image row" style="margin-right: 0px;">
-    <div class="col-sm-6">
+    <div class="col-sm-5">
       <div class="guesthome-text">
         <h1 style="font-size:50px">ค้นหาที่จอดรถ</h1>
         <p style="font-size:20px">ค้นหาสถานที่และจองที่จอดรถ</p>
-        <button id="btnCheckStatus" class="btn btn-lg btn-primary">เริ่มหาที่จอดรถ</button>
+        <button id="btnCheckStatus" class="btn btn-lg btn-primary">สมัครสมาชิก</button>
       </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-2" style="background-color: gray;">
+      <div class="guesthome-text">
+        <h1 style="font-size:50px">หรือ</h1>
+        <button id="btnSignIn" class="btn btn-lg btn-success">เข้าสู่ระบบ</button>
+      </div>
+    </div>
+    <div class="col-sm-5">
       <div class="guesthome-text">
         <h1 style="font-size:50px">ร่วมเป็นผู้ให้เช่า</h1>
-        <p style="font-size:20px">คุณพอมีพื้นที่ว่างให้รถจอดไหม?</p>
-        <p style="font-size:20px">มาสร้างรายได้เสริม & ยกระดับธุรกิจของคุณกัน</p>
-        <button id="btnSignUp" class="btn btn-lg btn-success">ลงทะเบียนเลย</button>
+        <p style="font-size:20px">มีพื้นที่ว่างให้รถจอด?</p>
+        <p style="font-size:20px">เริ่มสร้างรายได้ & ยกระดับธุรกิจเลย</p>
+        <button id="btnSignUp" class="btn btn-lg btn-info">ลงทะเบียนเลย</button>
       </div>
     </div>
   </div>
