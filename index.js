@@ -48,7 +48,7 @@ app.get("/signUpMember", function (req, res) {
 
 app.get("/getStatus", function (req, res) {
 
-    const sql = "SELECT UserID, Location, Activation FROM account";
+    const sql = "SELECT UserID, Location, Activation,Geo,Province,Amphur,District,Description,SupportCar FROM account";
     con.query(sql, function (err, result, fields) {
         if (err) {
             // console.log(err)
@@ -61,6 +61,20 @@ app.get("/getStatus", function (req, res) {
         }
     });
 })
+
+app.get("/getMemberInfo/:id", function (req, res) {
+    var id = req.params.id;
+    const sql = "SELECT Firstname, Lastname FROM `member` where User = ?;";
+    con.query(sql, [id], function (err, result, fields) {
+        if (err) {
+            // console.log(err)
+            res.status(500).send("Server error");
+        }
+        else {
+            res.json(result);
+        }
+    });
+});
 
 app.put("/addMember", function (req, res) {
     const { Username, Password, Firstname, Lastname, Phone, Email } = req.body
