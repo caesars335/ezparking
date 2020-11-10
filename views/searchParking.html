@@ -26,7 +26,7 @@
 </head>
 <script>
   var memberID = localStorage.MemberID
-  var currentID;
+  var currentID, UserID;
   var memberFirstname, memberLastname;
   $(document).ready(function () {
     $("#tabRequest").hide();
@@ -120,7 +120,7 @@
       }
     });
 
-    CurrentTable = $('.table').DataTable({
+    CurrentTable = $('.table1').DataTable({
       "searching": true,
       "lengthChange": true,
       "paging": true,
@@ -161,6 +161,7 @@
           let current_datetime = new Date();
           var str = $(this).val();
           var val = $.parseJSON(str);
+          UserID = val.UserID
           $("#txtYear").val(current_datetime.getFullYear());
           $("#txtMonth").val((current_datetime.getMonth() + 1));
           $("#txtDay").val(current_datetime.getDate());
@@ -169,7 +170,7 @@
         $(".btnSearchOk").click(function () {
           const txtYear = $("#txtYear").val();
           const txtMonth = $("#txtYear").val();
-          const txtTime = $("#txtTime").val();
+          const txtTime = $("#txtTime option:selected").val();
           const txtDay = $("#txtDay").val();
           const txtFirstname = memberFirstname;
           const txtLastname = memberLastname;
@@ -177,9 +178,9 @@
           $.ajax({
             method: "POST",
             url: "/sendRequest",
-            data: { RequesterFirstname: txtFirstname, RequesterLastname: txtLastname, Day: txtDay, Month: txtMonth, Year: txtYear, Time: txtTime, Confirmation: confirmation}
-          }).done(function (data, state, xhr) { 
-              alert("ส่งคำแจ้งเรียบร้อยแล้ว ท่านสามารถตรวจสอบสถานะได้ที่แถบ 'ตรวจสอบคำขอ'")
+            data: { UserID: UserID, MemberID: memberID, RequesterFirstname: txtFirstname, RequesterLastname: txtLastname, Day: txtDay, Month: txtMonth, Year: txtYear, Time: txtTime, Confirmation: confirmation }
+          }).done(function (data, state, xhr) {
+            alert("ส่งคำแจ้งเรียบร้อยแล้ว ท่านสามารถตรวจสอบสถานะได้ที่แถบ 'ตรวจสอบคำขอ'")
           }).fail(function (xhr, state, error) {
             alert("xhr")
           })
@@ -298,7 +299,7 @@
           <div class="col-md-12"></div>
           <h2>ค้นหาที่จอดรถ</h2>
           <button class="btn btn-success" id="btnReload">โหลดข้อมูลใหม่</button>
-          <table class="table table-striped table-bordered mt-5" style="width:100%"></table>
+          <table class="table table1 table-striped table-bordered mt-5" style="width:100%"></table>
         </div>
       </div>
     </div>
@@ -309,9 +310,8 @@
       <div class="jumbotron jumbotron text-white">
         <div class="container row">
           <div class="col-md-12"></div>
-          <h2>ค้นหาที่จอดรถ</h2>
-          <button class="btn btn-success" id="btnReload">โหลดข้อมูลใหม่</button>
-          <table class="table table-striped table-bordered mt-5" style="width:100%"></table>
+          <h2>ตรวจสอบคำขอจอดรถ</h2>
+          <table class="table table2 table-striped table-bordered mt-5" style="width:100%"></table>
         </div>
       </div>
     </div>

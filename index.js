@@ -77,9 +77,9 @@ app.get("/getMemberInfo/:id", function (req, res) {
 });
 
 app.post("/sendRequest", function (req, res){
-    var { RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation} = req.body
-    const sql = "INSERT INTO `request` (`RequesterFirstname`, `RequestierLastname`, `Day`, `Month`, `Year`, `Time`, `Confirmation`) VALUES (?,?,?,?,?,?,?);";
-    con.query(sql, [ RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation], function (err, result, fields) {
+    var { UserID,MemberID, RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation} = req.body
+    const sql = "INSERT INTO `request` (`UserID`,`MemberID`,`RequesterFirstname`, `RequestierLastname`, `Day`, `Month`, `Year`, `Time`, `Confirmation`) VALUES (?,?,?,?,?,?,?,?,?);";
+    con.query(sql, [ UserID,MemberID, RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation], function (err, result, fields) {
         if (err) {
             res.status(500).send("Server error");
             console.log(err)
