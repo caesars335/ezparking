@@ -111,7 +111,7 @@
                         // alert(dataSet[0].name_th)
                         var provinceData = "<option value='none' id='provinceValue'></option>";
                         for (let i = 0; i < dataSet.length; i++) {
-                            provinceData = provinceData + "<option value='" + dataSet[i].id + dataSet[i].name_th + "'>" + dataSet[i].name_th + "</option>"
+                            provinceData = provinceData + `<option value='{"id":"` + dataSet[i].id + `","name":"` + dataSet[i].name_th + `"}'>` + dataSet[i].name_th + "</option>"
                         }
                         $("#provinceData").html(provinceData);
                     }
@@ -125,54 +125,17 @@
         });
 
         provinceEvent.addEventListener("change", function () {
+            $('#amphurData').prop('disabled', 'disabled');
+            $('#districtData').prop('disabled', 'disabled');
+            var strProvince = this.value;
+            var valProvince = $.parseJSON(strProvince);
             if ($("#provinceData option:selected").val() != "none") {
                 $('#amphurData').prop('disabled', false);
                 $('#amphurData').val("");
                 $('#districtData').val("");
-                if ($("#provinceData option:selected").val() == "1กรุงเทพมหานคร") {
-                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
-                    provinceName = $("#provinceData option:selected").val().substring(1);
-                    console.log(provinceID + " " + provinceName);
-                } else if ($("#provinceData option:selected").val() == "2สมุทรปราการ") {
-                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
-                    provinceName = $("#provinceData option:selected").val().substring(1);
-                    console.log(provinceID + " " + provinceName);
-                } else if ($("#provinceData option:selected").val() == "3นนทบุรี") {
-                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
-                    provinceName = $("#provinceData option:selected").val().substring(1);
-                    console.log(provinceID + " " + provinceName);
-                } else if ($("#provinceData option:selected").val() == "4ปทุมธานี") {
-                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
-                    provinceName = $("#provinceData option:selected").val().substring(1);
-                    console.log(provinceID + " " + provinceName);
-                } else if ($("#provinceData option:selected").val() == "5พระนครศรีอยุธยา") {
-                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
-                    provinceName = $("#provinceData option:selected").val().substring(1);
-                    console.log(provinceID + " " + provinceName);
-                } else if ($("#provinceData option:selected").val() == "6อ่างทอง") {
-                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
-                    provinceName = $("#provinceData option:selected").val().substring(1);
-                    console.log(provinceID + " " + provinceName);
-                } else if ($("#provinceData option:selected").val() == "7ลพบุรี") {
-                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
-                    provinceName = $("#provinceData option:selected").val().substring(1);
-                    console.log(provinceID + " " + provinceName);
-                } else if ($("#provinceData option:selected").val() == "8สิงห์บุรี") {
-                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
-                    provinceName = $("#provinceData option:selected").val().substring(1);
-                    console.log(provinceID + " " + provinceName);
-                } else if ($("#provinceData option:selected").val() == "9ชัยนาท") {
-                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
-                    provinceName = $("#provinceData option:selected").val().substring(1);
-                    console.log(provinceID + " " + provinceName);
-                } else {
-                    provinceID = $("#provinceData option:selected").val().substring(0, 2);
-                    provinceName = $("#provinceData option:selected").val().substring(2);
-                    console.log(provinceID + " " + provinceName);
-                }
-            } else {
-                $('#amphurData').prop('disabled', 'disabled');
-                $('#districtData').prop('disabled', 'disabled');
+                provinceID = valProvince.id;
+                provinceName = valProvince.name;
+                console.log(provinceID + " " + provinceName);
             }
             $.ajax({
                 type: "get",
@@ -181,12 +144,13 @@
                     // alert(dataSet[0].name_th)
                     var amphurData = "<option value='none' id='amphurValue'></option>";
                     for (let i = 0; i < dataSet.length; i++) {
-                        amphurData = amphurData + "<option value='" + dataSet[i].id + dataSet[i].name_th + "'>" + dataSet[i].name_th + "</option>"
+                        amphurData = amphurData + `<option value='{"id":"` + dataSet[i].id + `","name":"` + dataSet[i].name_th + `"}'>` + dataSet[i].name_th + "</option>"
                     }
                     $("#amphurData").html(amphurData);
                 }
             });
         });
+        
         amphurEvent.addEventListener("change", function () {
             if ($("#amphurData option:selected").val() != "none") {
                 $('#districtData').prop('disabled', false);
@@ -244,7 +208,7 @@
                     // alert(dataSet[0].name_th)
                     var districtData = "<option value='none' id='amphurValue'></option>";
                     for (let i = 0; i < dataSet.length; i++) {
-                        districtData = districtData + "<option value='" + dataSet[i].id + dataSet[i].name_th + "'>" + dataSet[i].name_th + "</option>"
+                        districtData = districtData + `<option value='{"id":"` + dataSet[i].id + `","name":"` + dataSet[i].name_th + `"}'>` + dataSet[i].name_th + "</option>"
                     }
                     $("#districtData").html(districtData);
                 }
@@ -256,7 +220,7 @@
             if ($("#districtData option:selected").val() != "none") {
                 districtID = $("#districtData option:selected").val().substring(0, 1);
                 districtName = $("#districtData option:selected").val().substring(1);
-            }else{
+            } else {
                 alert("hello")
             }
         });
