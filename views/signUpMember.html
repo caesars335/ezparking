@@ -36,7 +36,7 @@
                     data: { Username: username, Password: password, Firstname: firstname, Lastname: lastname, Phone: phone, Email: email}
                 }).done(function (data, state, xhr) {
                     if (data[0].Username != undefined && data[0].Username != null && data[0].Username != '') {
-                        localStorage.UserID = data[0].UserID;
+                        localStorage.MemberID = data[0].UserID;
                         alert("ลงทะเบียนเรียบร้อยแล้ว")
                         window.location.replace('/signIn')
                     } else {

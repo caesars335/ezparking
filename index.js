@@ -81,7 +81,7 @@ app.put("/addMember", function (req, res) {
                             console.log(err2)
                         }
                         else {
-                            const sql2 = "SELECT * FROM account WHERE Username = ?"
+                            const sql2 = "SELECT * FROM member WHERE Username = ?"
                             con.query(sql2, [Username], function (err2, result2, fields2) {
                                 if (err2) {
                                     res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
@@ -144,6 +144,36 @@ app.post("/login", function (req, res) {
     const { Username, Password1 } = req.body
 
     const sql = "SELECT * FROM account WHERE Username = ?"
+    con.query(sql, [Username, Username], function (err, result, fields) {
+        if (err) {
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+            console.log(err)
+        }
+        else {
+            if (result.length > 0) {
+                bcrypt.compare(Password1, result[0].Password, function (err, resp) {
+                    if (err) {
+                        res.status(503).send('Authentication Server error');
+                    } else {
+                        if (resp) {
+                            res.json(result)
+
+                        } else {
+                            res.send('0')
+                        }
+                    }
+                });
+            } else {
+                res.send('0')
+            }
+        }
+    })
+});
+
+app.post("/loginMember", function (req, res) {
+    const { Username, Password1 } = req.body
+
+    const sql = "SELECT * FROM member WHERE Username = ?"
     con.query(sql, [Username, Username], function (err, result, fields) {
         if (err) {
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");

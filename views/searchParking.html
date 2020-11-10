@@ -30,6 +30,10 @@
     $("#btnReload").click(function (e) {
       window.location.replace("/searchParking");
     });
+    $('#btnSignOut').click(function (e) {
+            localStorage.removeItem("memberID");
+            window.location.replace('/')
+        });
     loaddata()
   });
 
@@ -93,18 +97,7 @@
         <!-- ml-auto will move links to the right side of navbar -->
         <ul class="navbar-nav ml-auto">
           <!-- active is to highlight -->
-          <li class="nav-item">
-            <a class="nav-link" href="/">หน้าหลัก</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/signUpMember">สมัครสมาชิก</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/signUp">สนใจเป็นผู้ให้เช่าที่จอดรถ</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/signIn">เข้าสู่ระบบ</a>
-          </li>
+          <button class="btn btn-danger" id="btnSignOut">ออกจากระบบ</button>
         </ul>
       </div>
     </div>

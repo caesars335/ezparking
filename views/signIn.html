@@ -79,6 +79,31 @@
 
     })
 
+    $('#btnSigninMember').click(function () {
+      let username = $('#txtUsername2').val();
+      let password = $('#txtPassword2').val();
+      if (username != '' && password != '') {
+        $.ajax({
+          method: "POST",
+          url: "/loginMember",
+          data: { Username: username, Password1: password },
+        }).done(function (data, state, xhr) {
+          if (data[0].Username != undefined && data[0].Username != null && data[0].Username != '' && data[0].Username != '0') {
+            localStorage.MemberID = data[0].UserID;
+            window.location.replace('/searchParking')
+          } else {
+            alert("รหัสผ่านไม่ถูกต้อง")
+          }
+
+        }).fail(function (xhr, state, error) {
+          alert("xhr.responseText")
+        })
+      } else {
+        alert('กรอกข้อมูลให้ครบถ้วน')
+      }
+
+    })
+
   });
 </script>
 
@@ -189,7 +214,7 @@
         <div class="col-md-1"></div>
         <div class="col-md-10">
           <h5 class="text-white">ชื่อผู้ใช้ (Username)</h5>
-          <input type="text" class="form-control mb-3" id="txtUsername" style="background-color: #eaeaea;"
+          <input type="text" class="form-control mb-3" id="txtUsername2" style="background-color: #eaeaea;"
             placeholder="ชื่อผู้ใช้" onfocus="this.placeholder = ''" onblur="this.placeholder = 'ชื่อผู้ใช้'" />
         </div>
         <div class="col-md-1"></div>
@@ -198,7 +223,7 @@
         <div class="col-md-1"></div>
         <div class="col-md-10">
           <h5 class="text-white">รหัสผ่าน</h5>
-          <input type="password" class="form-control mb-3" id='txtPassword' style="background-color: #eaeaea;"
+          <input type="password" class="form-control mb-3" id='txtPassword2' style="background-color: #eaeaea;"
             placeholder="รหัสผ่าน" onfocus="this.placeholder = ''" onblur="this.placeholder = 'รหัสผ่าน'" />
         </div>
         <div class="col-md-1"></div>
@@ -206,7 +231,7 @@
       <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
-          <button class="btn btn-primary" id="btnSignin" style="width: 100%;">เข้าสู่ระบบ</button>
+          <button class="btn btn-primary" id="btnSigninMember" style="width: 100%;">เข้าสู่ระบบ</button>
         </div>
         <div class="col-md-1"></div>
       </div>
