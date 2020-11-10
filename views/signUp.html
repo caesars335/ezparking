@@ -20,7 +20,17 @@
         var geoEvent = document.getElementById("geoData");
         var provinceEvent = document.getElementById("provinceData");
         var amphurEvent = document.getElementById("amphurData");
-        var districtEvent = document.getElementById("dictrictData");
+        var districtEvent = document.getElementById("districtData");
+        var geoID, provinceID, amphurID, districtID, geoName, provinceName, amphurName, districtName;
+        var optionProvince1;
+        var optionProvince2;
+        var optionProvince3;
+        var optionProvince4;
+        var optionProvince5;
+        var optionProvince6;
+        var optionProvince7;
+        var optionProvince8;
+        var optionProvince9;
 
         loadData();
         $("#btnSignup").click(function () {
@@ -89,7 +99,11 @@
             if ($("#geoData option:selected").val() != "none") {
                 $('#provinceData').prop('disabled', false);
                 geoID = $("#geoData option:selected").val().substring(0, 1);
-                alert(geoID)
+                geoName = $("#geoData option:selected").val().substring(1);
+                console.log(geoID + " " + geoName)
+                $('#provinceData').val("");
+                $('#amphurData').val("");
+                $('#districtData').val("");
                 $.ajax({
                     type: "get",
                     url: "/getAllProvinces/" + geoID,
@@ -97,7 +111,7 @@
                         // alert(dataSet[0].name_th)
                         var provinceData = "<option value='none' id='provinceValue'></option>";
                         for (let i = 0; i < dataSet.length; i++) {
-                            provinceData = provinceData + "<option value='" + dataSet[i].id + "'>" + dataSet[i].name_th + "</option>"
+                            provinceData = provinceData + "<option value='" + dataSet[i].id + dataSet[i].name_th + "'>" + dataSet[i].name_th + "</option>"
                         }
                         $("#provinceData").html(provinceData);
                     }
@@ -113,69 +127,138 @@
         provinceEvent.addEventListener("change", function () {
             if ($("#provinceData option:selected").val() != "none") {
                 $('#amphurData').prop('disabled', false);
-                provinceID = $("#provinceData option:selected").val();
-
-                $.ajax({
-                    type: "get",
-                    url: "/getAllAmphures/" + provinceID,
-                    success: function (dataSet) {
-                        // alert(dataSet[0].name_th)
-                        var amphurData = "<option value='none' id='amphurValue'></option>";
-                        for (let i = 0; i < dataSet.length; i++) {
-                            amphurData = amphurData + "<option value='" + dataSet[i].id + "'>" + dataSet[i].name_th + "</option>"
-                        }
-                        $("#amphurData").html(amphurData);
-                    }
-                });
+                $('#amphurData').val("");
+                $('#districtData').val("");
+                if ($("#provinceData option:selected").val() == "1กรุงเทพมหานคร") {
+                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
+                    provinceName = $("#provinceData option:selected").val().substring(1);
+                    console.log(provinceID + " " + provinceName);
+                } else if ($("#provinceData option:selected").val() == "2สมุทรปราการ") {
+                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
+                    provinceName = $("#provinceData option:selected").val().substring(1);
+                    console.log(provinceID + " " + provinceName);
+                } else if ($("#provinceData option:selected").val() == "3นนทบุรี") {
+                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
+                    provinceName = $("#provinceData option:selected").val().substring(1);
+                    console.log(provinceID + " " + provinceName);
+                } else if ($("#provinceData option:selected").val() == "4ปทุมธานี") {
+                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
+                    provinceName = $("#provinceData option:selected").val().substring(1);
+                    console.log(provinceID + " " + provinceName);
+                } else if ($("#provinceData option:selected").val() == "5พระนครศรีอยุธยา") {
+                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
+                    provinceName = $("#provinceData option:selected").val().substring(1);
+                    console.log(provinceID + " " + provinceName);
+                } else if ($("#provinceData option:selected").val() == "6อ่างทอง") {
+                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
+                    provinceName = $("#provinceData option:selected").val().substring(1);
+                    console.log(provinceID + " " + provinceName);
+                } else if ($("#provinceData option:selected").val() == "7ลพบุรี") {
+                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
+                    provinceName = $("#provinceData option:selected").val().substring(1);
+                    console.log(provinceID + " " + provinceName);
+                } else if ($("#provinceData option:selected").val() == "8สิงห์บุรี") {
+                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
+                    provinceName = $("#provinceData option:selected").val().substring(1);
+                    console.log(provinceID + " " + provinceName);
+                } else if ($("#provinceData option:selected").val() == "9ชัยนาท") {
+                    provinceID = $("#provinceData option:selected").val().substring(0, 1);
+                    provinceName = $("#provinceData option:selected").val().substring(1);
+                    console.log(provinceID + " " + provinceName);
+                } else {
+                    provinceID = $("#provinceData option:selected").val().substring(0, 2);
+                    provinceName = $("#provinceData option:selected").val().substring(2);
+                    console.log(provinceID + " " + provinceName);
+                }
             } else {
                 $('#amphurData').prop('disabled', 'disabled');
+                $('#districtData').prop('disabled', 'disabled');
             }
-
-            provinceEvent.addEventListener("change", function () {
-                if ($("#provinceData option:selected").val() != "none") {
-                    $('#amphurData').prop('disabled', false);
-                    provinceID = $("#provinceData option:selected").val();
-
-                    $.ajax({
-                        type: "get",
-                        url: "/getAllAmphures/" + provinceID,
-                        success: function (dataSet) {
-                            // alert(dataSet[0].name_th)
-                            var amphurData = "<option value='none' id='amphurValue'></option>";
-                            for (let i = 0; i < dataSet.length; i++) {
-                                amphurData = amphurData + "<option value='" + dataSet[i].id + "'>" + dataSet[i].name_th + "</option>"
-                            }
-                            $("#amphurData").html(amphurData);
-                        }
-                    });
-                } else {
-                    $('#amphurData').prop('disabled', 'disabled');
+            $.ajax({
+                type: "get",
+                url: "/getAllAmphures/" + provinceID,
+                success: function (dataSet) {
+                    // alert(dataSet[0].name_th)
+                    var amphurData = "<option value='none' id='amphurValue'></option>";
+                    for (let i = 0; i < dataSet.length; i++) {
+                        amphurData = amphurData + "<option value='" + dataSet[i].id + dataSet[i].name_th + "'>" + dataSet[i].name_th + "</option>"
+                    }
+                    $("#amphurData").html(amphurData);
                 }
-
             });
-            amphurEvent.addEventListener("change", function () {
-                if ($("#amphurData option:selected").val() != "none") {
-                    $('#districtData').prop('disabled', false);
-                    amphurID = $("#amphurData option:selected").val();
-
-                    $.ajax({
-                        type: "get",
-                        url: "/getAllDistricts/" + amphurID,
-                        success: function (dataSet) {
-                            // alert(dataSet[0].name_th)
-                            var districtData = "<option value='none' id='amphurValue'></option>";
-                            for (let i = 0; i < dataSet.length; i++) {
-                                districtData = districtData + "<option value='" + dataSet[i].id + "'>" + dataSet[i].name_th + "</option>"
-                            }
-                            $("#districtData").html(districtData);
-                        }
-                    });
-                } else {
+        });
+        amphurEvent.addEventListener("change", function () {
+            if ($("#amphurData option:selected").val() != "none") {
+                $('#districtData').prop('disabled', false);
+                $('#districtData').val("");
+                if ($("#provinceData option:selected").val() == "1เขตพระนคร") {
+                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
+                    amphurName = $("#amphurData option:selected").val().substring(1);
+                    console.log(amphurID + " " + amphurName);
+                } else if ($("#amphurData option:selected").val() == "2เขตดุสิต") {
+                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
+                    amphurName = $("#amphurData option:selected").val().substring(1);
+                    console.log(amphurID + " " + amphurName);
+                } else if ($("#amphurData option:selected").val() == "3เขตหนองจอก") {
+                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
+                    amphurName = $("#amphurData option:selected").val().substring(1);
+                    console.log(amphurID + " " + amphurName);
+                } else if ($("#amphurData option:selected").val() == "4เขตบางรัก") {
+                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
+                    amphurName = $("#amphurData option:selected").val().substring(1);
+                    console.log(amphurID + " " + amphurName);
+                } else if ($("#amphurData option:selected").val() == "5เขตบางเขน") {
+                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
+                    amphurName = $("#amphurData option:selected").val().substring(1);
+                    console.log(amphurID + " " + amphurName);
+                } else if ($("#amphurData option:selected").val() == "6เขตบางกะปิ") {
+                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
+                    amphurName = $("#amphurData option:selected").val().substring(1);
+                    console.log(amphurID + " " + amphurName);
+                } else if ($("#amphurData option:selected").val() == "7เขตปทุมวัน") {
+                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
+                    amphurName = $("#amphurData option:selected").val().substring(1);
+                    console.log(amphurID + " " + amphurName);
+                } else if ($("#amphurData option:selected").val() == "8เขตป้อมปราบศัตรูพ่าย") {
+                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
+                    amphurName = $("#amphurData option:selected").val().substring(1);
+                    console.log(amphurID + " " + amphurName);
+                } else if ($("#amphurData option:selected").val() == "9เขตพระโขนง") {
+                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
+                    amphurName = $("#amphurData option:selected").val().substring(1);
+                    console.log(amphurID + " " + amphurName);
+                } else if ($("#amphurData option:selected").val() == "none") {
                     $('#districtData').prop('disabled', 'disabled');
+                    amphurID = "";
+                    amphurName = "";
+                } else {
+                    amphurID = $("#amphurData option:selected").val().substring(0, 2);
+                    amphurName = $("#amphurData option:selected").val().substring(2);
+                    console.log(amphurID + " " + amphurName);
                 }
-
+            }
+            $.ajax({
+                type: "get",
+                url: "/getAllDistricts/" + amphurID,
+                success: function (dataSet) {
+                    // alert(dataSet[0].name_th)
+                    var districtData = "<option value='none' id='amphurValue'></option>";
+                    for (let i = 0; i < dataSet.length; i++) {
+                        districtData = districtData + "<option value='" + dataSet[i].id + dataSet[i].name_th + "'>" + dataSet[i].name_th + "</option>"
+                    }
+                    $("#districtData").html(districtData);
+                }
             });
 
+        });
+
+        districtEvent.addEventListener("change", function () {
+            if ($("#districtData option:selected").val() != "none") {
+                districtID = $("#districtData option:selected").val().substring(0, 1);
+                districtName = $("#districtData option:selected").val().substring(1);
+            }else{
+                alert("hello")
+            }
         });
     });
 </script>
@@ -335,7 +418,8 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
                     <h5 class="text-white">จำนวนรถยนต์ที่สามารถรองรับได้ (โปรดระบุเป็นตัวเลข)<span>
-                            <h6 style="color: rgba(255, 235, 205, 0.555);">(เช่น รถยนต์เก๋ง/กระบะโดยสารทั่วไป , รถซีดาน 4 ล้อ , รถโดยสารได้ไม่เกิน 7 คน)</h6>
+                            <h6 style="color: rgba(255, 235, 205, 0.555);">(เช่น รถยนต์เก๋ง/กระบะโดยสารทั่วไป , รถซีดาน
+                                4 ล้อ , รถโดยสารได้ไม่เกิน 7 คน)</h6>
                         </span></h5>
                     <input type="text" class="form-control mb-3" id='txtLocation' style="background-color: #eaeaea;"
                         placeholder="จำนวนที่รองรับได้ (โปรดระบุเป็นตัวเลข)" onfocus="this.placeholder = ''"
