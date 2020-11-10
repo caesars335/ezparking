@@ -64,7 +64,7 @@ app.get("/getStatus", function (req, res) {
 
 app.get("/getMemberInfo/:id", function (req, res) {
     var id = req.params.id;
-    const sql = "SELECT Firstname, Lastname FROM `member` where User = ?;";
+    const sql = "SELECT Firstname, Lastname FROM `member` where UserID = ?;";
     con.query(sql, [id], function (err, result, fields) {
         if (err) {
             // console.log(err)
@@ -75,6 +75,20 @@ app.get("/getMemberInfo/:id", function (req, res) {
         }
     });
 });
+
+app.post("/sendRequest", function (req, res){
+    var { RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation} = req.body
+    const sql = "INSERT INTO `request` (`RequesterFirstname`, `RequestierLastname`, `Day`, `Month`, `Year`, `Time`, `Confirmation`) VALUES (?,?,?,?,?,?,?);";
+    con.query(sql, [ RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation], function (err, result, fields) {
+        if (err) {
+            res.status(500).send("Server error");
+            console.log(err)
+        }
+        else {
+            res.json(result);
+        }
+    });
+})
 
 app.put("/addMember", function (req, res) {
     const { Username, Password, Firstname, Lastname, Phone, Email } = req.body

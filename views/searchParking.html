@@ -25,7 +25,7 @@
   <title>ค้นหาที่จอดรถ</title>
 </head>
 <script>
-  var memberID = localStorage.memberID
+  var memberID = localStorage.MemberID
   var currentID;
   var memberFirstname, memberLastname;
   $(document).ready(function () {
@@ -36,13 +36,13 @@
       'color': 'white'
     });
     $("#btnTabRequest").css({
-        'background-color': '#6c757d',
-        'color': 'white'
-      });
-      $("#btnTabInfo").css({
-        'background-color': '#6c757d',
-        'color': 'white'
-      });
+      'background-color': '#6c757d',
+      'color': 'white'
+    });
+    $("#btnTabInfo").css({
+      'background-color': '#6c757d',
+      'color': 'white'
+    });
 
     $("#btnReload").click(function (e) {
       window.location.replace("/searchParking");
@@ -116,6 +116,7 @@
       success: function (dataSet) {
         memberFirstname = dataSet[0].Firstname;
         memberLastname = dataSet[0].Lastname;
+        // alert(memberFirstname + " " + memberLastname)
       }
     });
 
@@ -173,6 +174,15 @@
           const txtFirstname = memberFirstname;
           const txtLastname = memberLastname;
           const confirmation = "ยังไม่ได้รับการตอบรับ"
+          $.ajax({
+            method: "POST",
+            url: "/sendRequest",
+            data: { RequesterFirstname: txtFirstname, RequesterLastname: txtLastname, Day: txtDay, Month: txtMonth, Year: txtYear, Time: txtTime, Confirmation: confirmation}
+          }).done(function (data, state, xhr) { 
+              alert("ส่งคำแจ้งเรียบร้อยแล้ว ท่านสามารถตรวจสอบสถานะได้ที่แถบ 'ตรวจสอบคำขอ'")
+          }).fail(function (xhr, state, error) {
+            alert("xhr")
+          })
           $("#modalReserve").modal("hide");
         });
       }
