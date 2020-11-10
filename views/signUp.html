@@ -92,10 +92,15 @@
                     $('#provinceData').prop('disabled', 'disabled');
                     $('#districtData').prop('disabled', 'disabled');
                     $('#amphurData').prop('disabled', 'disabled');
+                    $('#btnSignup').prop('disabled', 'disabled');
                 }
             });
         }
         geoEvent.addEventListener("change", function () {
+            $('#provinceData').prop('disabled', 'disabled');
+            $('#districtData').prop('disabled', 'disabled');
+            $('#amphurData').prop('disabled', 'disabled');
+            $('#btnSignup').prop('disabled', 'disabled');
             if ($("#geoData option:selected").val() != "none") {
                 $('#provinceData').prop('disabled', false);
                 geoID = $("#geoData option:selected").val().substring(0, 1);
@@ -116,10 +121,6 @@
                         $("#provinceData").html(provinceData);
                     }
                 });
-            } else {
-                $('#provinceData').prop('disabled', 'disabled');
-                $('#districtData').prop('disabled', 'disabled');
-                $('#amphurData').prop('disabled', 'disabled');
             }
 
         });
@@ -127,6 +128,7 @@
         provinceEvent.addEventListener("change", function () {
             $('#amphurData').prop('disabled', 'disabled');
             $('#districtData').prop('disabled', 'disabled');
+            $('#btnSignup').prop('disabled', 'disabled');
             var strProvince = this.value;
             var valProvince = $.parseJSON(strProvince);
             if ($("#provinceData option:selected").val() != "none") {
@@ -150,78 +152,42 @@
                 }
             });
         });
-        
+
+
         amphurEvent.addEventListener("change", function () {
+            $('#districtData').prop('disabled', 'disabled');
+            $('#btnSignup').prop('disabled', 'disabled');
+            var strAmphur = this.value;
+            var valAmphur = $.parseJSON(strAmphur);
             if ($("#amphurData option:selected").val() != "none") {
                 $('#districtData').prop('disabled', false);
                 $('#districtData').val("");
-                if ($("#provinceData option:selected").val() == "1เขตพระนคร") {
-                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
-                    amphurName = $("#amphurData option:selected").val().substring(1);
-                    console.log(amphurID + " " + amphurName);
-                } else if ($("#amphurData option:selected").val() == "2เขตดุสิต") {
-                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
-                    amphurName = $("#amphurData option:selected").val().substring(1);
-                    console.log(amphurID + " " + amphurName);
-                } else if ($("#amphurData option:selected").val() == "3เขตหนองจอก") {
-                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
-                    amphurName = $("#amphurData option:selected").val().substring(1);
-                    console.log(amphurID + " " + amphurName);
-                } else if ($("#amphurData option:selected").val() == "4เขตบางรัก") {
-                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
-                    amphurName = $("#amphurData option:selected").val().substring(1);
-                    console.log(amphurID + " " + amphurName);
-                } else if ($("#amphurData option:selected").val() == "5เขตบางเขน") {
-                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
-                    amphurName = $("#amphurData option:selected").val().substring(1);
-                    console.log(amphurID + " " + amphurName);
-                } else if ($("#amphurData option:selected").val() == "6เขตบางกะปิ") {
-                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
-                    amphurName = $("#amphurData option:selected").val().substring(1);
-                    console.log(amphurID + " " + amphurName);
-                } else if ($("#amphurData option:selected").val() == "7เขตปทุมวัน") {
-                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
-                    amphurName = $("#amphurData option:selected").val().substring(1);
-                    console.log(amphurID + " " + amphurName);
-                } else if ($("#amphurData option:selected").val() == "8เขตป้อมปราบศัตรูพ่าย") {
-                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
-                    amphurName = $("#amphurData option:selected").val().substring(1);
-                    console.log(amphurID + " " + amphurName);
-                } else if ($("#amphurData option:selected").val() == "9เขตพระโขนง") {
-                    amphurID = $("#amphurData option:selected").val().substring(0, 1);
-                    amphurName = $("#amphurData option:selected").val().substring(1);
-                    console.log(amphurID + " " + amphurName);
-                } else if ($("#amphurData option:selected").val() == "none") {
-                    $('#districtData').prop('disabled', 'disabled');
-                    amphurID = "";
-                    amphurName = "";
-                } else {
-                    amphurID = $("#amphurData option:selected").val().substring(0, 2);
-                    amphurName = $("#amphurData option:selected").val().substring(2);
-                    console.log(amphurID + " " + amphurName);
-                }
+                amphurID = valAmphur.id;
+                amphureName = valAmphur.name;
+                console.log(amphurID + " " + amphureName);
             }
             $.ajax({
                 type: "get",
                 url: "/getAllDistricts/" + amphurID,
                 success: function (dataSet) {
                     // alert(dataSet[0].name_th)
-                    var districtData = "<option value='none' id='amphurValue'></option>";
+                    var districtData = "<option value='none' id='districtValue'></option>";
                     for (let i = 0; i < dataSet.length; i++) {
                         districtData = districtData + `<option value='{"id":"` + dataSet[i].id + `","name":"` + dataSet[i].name_th + `"}'>` + dataSet[i].name_th + "</option>"
                     }
                     $("#districtData").html(districtData);
                 }
             });
-
         });
 
         districtEvent.addEventListener("change", function () {
+            $('#btnSignup').prop('disabled', 'disabled');
+            var strDistrict = this.value;
+            var valDistrict = $.parseJSON(strDistrict);
             if ($("#districtData option:selected").val() != "none") {
+                $('#btnSignup').prop('disabled', false);
                 districtID = $("#districtData option:selected").val().substring(0, 1);
                 districtName = $("#districtData option:selected").val().substring(1);
-            } else {
-                alert("hello")
             }
         });
     });
