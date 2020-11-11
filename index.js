@@ -7,11 +7,13 @@ const favicon = require('serve-favicon');
 const saltRounds = 10;
 
 let config = {
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'ezparking'
-};
+    host    : '178.128.57.4',
+    user    : 'caesars2',
+    password: '0812678626',
+    database: 'ezparking',
+    port: '3306'
+  };
+
 
 const app = express();
 const con = mysql.createConnection(config, { multipleStatements: true });
@@ -464,7 +466,7 @@ app.put("/changeCar", function (req, res) {
 });
 
 // <======Starting server======>
-const PORT = 9099
+const PORT = 80
 app.listen(PORT, function () {
     console.log("Server port is " + PORT);
 });
