@@ -50,10 +50,10 @@
 
         $('#changeStatus').click(function (e) {
             var checkStatus
-            if (currentStatus == 'ว่าง') {
-                checkStatus = 'ไม่ว่าง'
+            if (currentStatus == 'เปิด') {
+                checkStatus = 'ปิด'
             } else {
-                checkStatus = 'ว่าง'
+                checkStatus = 'เปิด'
             }
             const activation = checkStatus;
             const newUserID = userid;
@@ -63,6 +63,22 @@
                 data: { UserID: newUserID, Activation: activation },
             }).done(function (data, state, shr) {
                 alert("เปลี่ยนสถานะเรียบร้อยแล้ว");
+                window.location.replace(data);
+            }).fail(function (xhr, state, error) {
+                alert("failing")
+                console.log(error)
+            });
+        });
+
+        $('#btnChangeCar').click(function (e) {
+            const newUserID = userid;
+            const supportCar = $("#editedCar").val();
+            $.ajax({
+                type: "put",
+                url: "/changeCar",
+                data: { UserID: newUserID, SupportCar: supportCar },
+            }).done(function (data, state, shr) {
+                alert("เปลี่ยนจำนวนที่ว่างเรียบร้อยแล้ว");
                 window.location.replace(data);
             }).fail(function (xhr, state, error) {
                 alert("failing")
@@ -88,7 +104,15 @@
                         $("#firstname").html(data[0].Firstname)
                         $("#lastname").html(data[0].Lastname)
                         $("#phone").html(data[0].Phone)
+                        $("#email").html(data[0].Email)
                         $("#location").html(data[0].Location)
+                        $("#description").html(data[0].Description)
+                        $("#geo").html(data[0].Geo)
+                        $("#province").html(data[0].Province)
+                        $("#amphur").html(data[0].Amphur)
+                        $("#district").html(data[0].District)
+                        $("#txtSupportCar").html(data[0].SupportCar)
+                        $("#editedCar").val(data[0].SupportCar);
                         $("#txtActivation").html(data[0].Activation)
                         $("#txtFirstname").val(data[0].Firstname);
                         $("#txtLastname").val(data[0].Lastname);
@@ -132,7 +156,18 @@
                 <div class="container row">
                     <div class="col-md-4 col-sm-12">
                         <h3>สถานที่จอดรถ</h3>
-                        <p><strong>สถานะปัจจุบัน: </strong><span id="txtActivation"></span></p>
+                        <p><strong>ภูมิภาค: </strong><span id="geo"></span></p>
+                        <p><strong>จังหวัด: </strong><span id="province"></span></p>
+                        <p><strong>อำเภอ: </strong><span id="amphur"></span></p>
+                        <p><strong>ตำบล: </strong><span id="district"></span></p>
+                        <p><strong>ชื่อสถานที่จอดรถ: </strong><span id="location"></span></p>
+                        <p><strong>คำอธิบาย: </strong><span id="description"></span></p>
+                        <hr>
+                        <p><strong>จำนวนที่ว่างจอดปัจจุบัน: </strong><span id="txtSupportCar"></span></p>
+                        <input type="text" id="editedCar" placeholder="จำนวนที่ว่างปัจจุบัน">
+                        <button class="btn btn-success mt-2 mb-3" id="btnChangeCar">ยืนยันการแก้ไขจำนวนที่ว่าง</button>
+                        <hr>
+                        <p><strong>สถานะบริการปัจจุบัน: </strong><span id="txtActivation"></span></p>
                         <button class="btn btn-primary" id="changeStatus">เปลี่ยนสถานะที่จอดรถ</button>
                     </div>
                     <div class="col-md-4 col-sm-0"></div>
@@ -148,8 +183,8 @@
                         </div>
                         <p><strong>ชื่อจริง: </strong><span id="firstname"></span></p>
                         <p><strong>นามสกุล: </strong><span id="lastname"></span></p>
-                        <p><strong>ชื่อสถานที่จอดรถ: </strong><span id="location"></span></p>
                         <p><strong>เบอร์มือถือ: </strong><span id="phone"></span></p>
+                        <p><strong>อีเมล: </strong><span id="email"></span></p>
                     </div>
                 </div>
             </div>

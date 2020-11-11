@@ -300,7 +300,7 @@ app.get("/getAllGeo", function (req, res) {
 
 app.get("/getLocationName/:UserID", function (req, res) {
     var UserID = req.params.UserID;
-    const sqlTrip = "SELECT Location, Firstname, Lastname, Phone, Activation FROM `account` WHERE UserID =?";
+    const sqlTrip = "SELECT Location, Firstname, Lastname, Phone, Email,Geo,Province,Amphur,District,Description,SupportCar,Activation FROM `account` WHERE UserID =?";
     con.query(sqlTrip, [UserID], function (err, result, fields) {
         if (err) {
             // console.log(err)
@@ -357,6 +357,22 @@ app.put("/changeStatus", function (req, res) {
 
     const sql = "UPDATE `account` SET `Activation` = ? WHERE `UserID` = ?;"
     con.query(sql, [Activation, UserID], function (err, result, fields) {
+        if (err) {
+            console.log(err)
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        }
+        else {
+            res.send("/toggleStatus");
+        }
+    })
+});
+
+app.put("/changeCar", function (req, res) {
+    const SupportCar = req.body.SupportCar
+    const UserID = req.body.UserID;
+
+    const sql = "UPDATE `account` SET `SupportCar` = ? WHERE `UserID` = ?;"
+    con.query(sql, [SupportCar, UserID], function (err, result, fields) {
         if (err) {
             console.log(err)
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
