@@ -64,7 +64,7 @@ app.get("/getStatus", function (req, res) {
 
 app.get("/getMemberInfo/:id", function (req, res) {
     var id = req.params.id;
-    const sql = "SELECT Firstname, Lastname FROM `member` where UserID = ?;";
+    const sql = "SELECT Firstname, Lastname, Phone, Email FROM `member` where UserID = ?;";
     con.query(sql, [id], function (err, result, fields) {
         if (err) {
             // console.log(err)
@@ -322,6 +322,25 @@ app.put("/editInfo", function (req, res) {
 
     const sql = "UPDATE `account` SET `Firstname` = ?,`Lastname` = ?, `Location` = ?, `Phone` = ? WHERE `UserID` = ?;"
     con.query(sql, [Firstname, Lastname, Location, Phone, UserID], function (err, result, fields) {
+        if (err) {
+            console.log(err)
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        }
+        else {
+            res.send("/toggleStatus");
+        }
+    })
+});
+
+app.put("/editMemberInfo", function (req, res) {
+    const Firstname = req.body.Firstname;
+    const Lastname = req.body.Lastname;
+    const Email = req.body.Email;
+    const Phone = req.body.Phone;
+    const UserID = req.body.UserID;
+
+    const sql = "UPDATE `member` SET `Firstname` = ?,`Lastname` = ?, `Phone` = ?, `Email` = ? WHERE `UserID` = ?;"
+    con.query(sql, [Firstname, Lastname, Phone, Email, UserID], function (err, result, fields) {
         if (err) {
             console.log(err)
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");

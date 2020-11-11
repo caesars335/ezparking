@@ -25,12 +25,15 @@
   <title>ค้นหาที่จอดรถ</title>
 </head>
 <script>
+  var firstname, lastname, phone, email;
   var memberID = localStorage.MemberID
   var currentID, UserID, UserLocation;
   var memberFirstname, memberLastname;
   $(document).ready(function () {
     $("#tabRequest").hide();
     $("#tabInfo").hide();
+    $("#tabSendRequest").hide();
+    $("#tabEditInfo").hide();
     $("#btnTabSearch").css({
       'background-color': '#007bff',
       'color': 'white'
@@ -90,6 +93,7 @@
       $("#tabInfo").show();
       $("#tabSearch").hide();
       $("#tabRequest").hide();
+      $("#tabEditInfo").hide();
       $("#btnTabInfo").css({
         'background-color': '#007bff',
         'color': 'white'
@@ -116,7 +120,20 @@
       success: function (dataSet) {
         memberFirstname = dataSet[0].Firstname;
         memberLastname = dataSet[0].Lastname;
+        firstname = dataSet[0].Firstname;
+        lastname = dataSet[0].Lastname;
+        phone = dataSet[0].Phone;
+        email = dataSet[0].Email;
+
+        $("#txtEditFirstname").val(firstname);
+        $("#txtEditLastname").val(lastname);
+        $("#txtEditPhone").val(phone);
+        $("#txtEditEmail").val(email);
         // alert(memberFirstname + " " + memberLastname)
+        //clear DataTable
+        CurrentTable3.clear();
+        //display modified JSON in DataTable
+        CurrentTable3.rows.add(dataSet).draw();
       }
     });
 
@@ -164,6 +181,25 @@
 
     });
 
+    CurrentTable3 = $('.table3').DataTable({
+      "searching": false,
+      "lengthChange": false,
+      "paging": false,
+      "ordering": false,
+      "info": false,
+      responsive: true,
+      deferRender: false,
+      columns: [
+        { data: "Firstname", title: "ชื่อจริง" },
+        { data: "Lastname", title: "นามสกุล" },
+        { data: "Phone", title: "เบอร์มือถือ" },
+        { data: "Email", title: "อีเมล" },
+
+
+      ],
+
+    });
+
     $.ajax({
       type: "get",
       url: "/getStatus/",
@@ -187,7 +223,12 @@
           $("#txtYear").val(current_datetime.getFullYear());
           $("#txtMonth").val((current_datetime.getMonth() + 1));
           $("#txtDay").val(current_datetime.getDate());
-          $("#modalReserve").modal("show");
+          $("#tabRequest").hide();
+          $("#tabInfo").hide();
+          $("#tabSearch").hide();
+          $("#tabMenu").hide();
+          $("#tabEditInfo").hide();
+          $("#tabSendRequest").show();
         });
         $(".btnSearchOk").click(function () {
           const txtYear = $("#txtYear").val();
@@ -207,7 +248,10 @@
           }).fail(function (xhr, state, error) {
             alert("xhr")
           })
-          $("#modalReserve").modal("hide");
+          $("#tabSendRequest").hide();
+          $("#tabInfo").show();
+          $("#tabSearch").show();
+          $("#tabMenu").show();
         });
       }
     });
@@ -225,77 +269,36 @@
       }
     });
 
+    $("#btnEditInfo").click(function (e) {
+      $("#tabRequest").hide();
+      $("#tabInfo").hide();
+      $("#tabSearch").hide();
+      $("#tabSendRequest").hide();
+      $("#tabMenu").hide();
+      $("#tabEditInfo").show();
+      $('#btnEditConfirm').click(function (e) {
+        const newFirstname = $("#txtEditFirstname").val();
+        const newLastname = $("#txtEditLastname").val();
+        const newPhone = $("#txtEditPhone").val();
+        const newEmail = $("#txtEditEmail").val();
+        const newID = memberID;
+        $.ajax({
+          type: "put",
+          url: "/editMemberInfo",
+          data: { UserID: newID, Firstname: newFirstname, Lastname: newLastname, Phone: newPhone, Email: newEmail },
+        }).done(function (data, state, shr) {
+          alert("แก้ไขข้อมูลเรียบร้อยแล้ว");
+          window.location.replace("/searchParking");
+        }).fail(function (xhr, state, error) {
+          alert("failing")
+        });
+      });
+    });
   }
 
 </script>
 
 <body>
-  <div class="modal" id="modalReserve" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">ส่งคำขอแจ้งจอดรถ</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>โปรดระบุ "วันที่" ที่ต้องการเข้าจอด</p>
-          <div class="row">
-            <div class="col-md-4">
-              วันที่
-              <input type="text" id="txtDay" placeholder="วันที่" style="width: 50%;">
-            </div>
-            <div class="col-md-4">
-              เดือน
-              <input type="text" id="txtMonth" placeholder="เดือน" style="width: 50%;">
-            </div>
-            <div class="col-md-4">
-              ปี
-              <input type="text" id="txtYear" placeholder="ปี" style="width: 50%;">
-            </div>
-          </div>
-          <p class="mt-3">โปรดระบุ "ช่วงเวลา" ที่ต้องการเข้าจอด</p>
-          <div class="row">
-            <div class="col-md-12">
-              เวลา
-              <select id="txtTime">
-                <option value="00:00 น.">00:00 น.</option>
-                <option value="01:00 น.">01:00 น.</option>
-                <option value="02:00 น.">02:00 น.</option>
-                <option value="03:00 น.">03:00 น.</option>
-                <option value="04:00 น.">04:00 น.</option>
-                <option value="05:00 น.">05:00 น.</option>
-                <option value="06:00 น.">06:00 น.</option>
-                <option value="07:00 น.">07:00 น.</option>
-                <option value="08:00 น.">08:00 น.</option>
-                <option value="09:00 น.">09:00 น.</option>
-                <option value="10:00 น.">10:00 น.</option>
-                <option value="11:00 น.">11:00 น.</option>
-                <option value="12:00 น.">12:00 น.</option>
-                <option value="13:00 น.">13:00 น.</option>
-                <option value="14:00 น.">14:00 น.</option>
-                <option value="15:00 น.">15:00 น.</option>
-                <option value="16:00 น.">16:00 น.</option>
-                <option value="17:00 น.">17:00 น.</option>
-                <option value="18:00 น.">18:00 น.</option>
-                <option value="19:00 น.">19:00 น.</option>
-                <option value="20:00 น.">20:00 น.</option>
-                <option value="21:00 น.">21:00 น.</option>
-                <option value="22:00 น.">22:00 น.</option>
-                <option value="23:00 น.">23:00 น.</option>
-              </select>
-            </div>
-          </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary btnSearchOk">ส่งคำแจ้ง</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-        </div>
-      </div>
-    </div>
-  </div>
   <nav class="navbar navbar-expand-md navbar-light navBG sticky-top">
     <div class="container-fluid">
       <!-- Insert LOGO on the nav -->
@@ -314,28 +317,120 @@
       </div>
     </div>
   </nav>
-  <div class="row centered">
+  <div class="row centered" id="tabMenu">
     <div class="col-md-2"></div>
     <div class="col-md-8">
       <div class="jumbotron jumbotron text-white">
         <div class="container row">
-          <div class="col-md-4"><button class="btn w-100" id="btnTabSearch">ค้นหาที่จอดรถ</button></div>
-          <div class="col-md-4"><button class="btn w-100" id="btnTabRequest">ตรวจสอบคำขอจอด</button></div>
-          <div class="col-md-4"><button class="btn w-100" id="btnTabInfo">ข้อมูลส่วนตัว</button></div>
+          <div class="col-md-4"><button class="btn w-100 mb-2" id="btnTabSearch">ค้นหาที่จอดรถ</button></div>
+          <div class="col-md-4"><button class="btn w-100 mb-2" id="btnTabRequest">ตรวจสอบคำขอจอด</button></div>
+          <div class="col-md-4"><button class="btn w-100 mb-2" id="btnTabInfo">ข้อมูลส่วนตัว</button></div>
         </div>
       </div>
     </div>
   </div>
+  <div class="row centered" id="tabEditInfo">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div class="jumbotron jumbotron text-white">
+        <div class="container row">
+          <div class="col-md-12">
+            <h3 class="mb-3">แก้ไขข้อมูล</h3>
+            <p>ชื่อจริง</p>
+            <input type="text" id="txtEditFirstname">
+            <p>นามสกุล</p>
+            <input type="text" id="txtEditLastname">
+            <p>เบอร์มือถือ</p>
+            <input type="text" id="txtEditPhone">
+            <p>อีเมล</p>
+            <input type="text" id="txtEditEmail">
+            <p></p>
+            <button class="btn btn-success" id="btnEditConfirm">ยืนยัน</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row centered" id="tabSendRequest">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div class="jumbotron jumbotron text-white">
+        <div class="container row">
+          <div class="col-md-12">
+            <h3>ส่งคำขอแจ้งจอดรถ</h3>
+            <p>โปรดระบุ "วันที่" ที่ต้องการเข้าจอด</p>
+            <div class="row">
+              <div class="col-md-4">
+                วันที่
+                <input type="text" id="txtDay" placeholder="วันที่" style="width: 50%;">
+              </div>
+              <div class="col-md-4">
+                เดือน
+                <input type="text" id="txtMonth" placeholder="เดือน" style="width: 50%;">
+              </div>
+              <div class="col-md-4">
+                ปี
+                <input type="text" id="txtYear" placeholder="ปี" style="width: 50%;">
+              </div>
+            </div>
+            <p class="mt-3">โปรดระบุ "ช่วงเวลา" ที่ต้องการเข้าจอด</p>
+            <div class="row">
+              <div class="col-md-12">
+                เวลา
+                <select id="txtTime">
+                  <option value="00:00 น.">00:00 น.</option>
+                  <option value="01:00 น.">01:00 น.</option>
+                  <option value="02:00 น.">02:00 น.</option>
+                  <option value="03:00 น.">03:00 น.</option>
+                  <option value="04:00 น.">04:00 น.</option>
+                  <option value="05:00 น.">05:00 น.</option>
+                  <option value="06:00 น.">06:00 น.</option>
+                  <option value="07:00 น.">07:00 น.</option>
+                  <option value="08:00 น.">08:00 น.</option>
+                  <option value="09:00 น.">09:00 น.</option>
+                  <option value="10:00 น.">10:00 น.</option>
+                  <option value="11:00 น.">11:00 น.</option>
+                  <option value="12:00 น.">12:00 น.</option>
+                  <option value="13:00 น.">13:00 น.</option>
+                  <option value="14:00 น.">14:00 น.</option>
+                  <option value="15:00 น.">15:00 น.</option>
+                  <option value="16:00 น.">16:00 น.</option>
+                  <option value="17:00 น.">17:00 น.</option>
+                  <option value="18:00 น.">18:00 น.</option>
+                  <option value="19:00 น.">19:00 น.</option>
+                  <option value="20:00 น.">20:00 น.</option>
+                  <option value="21:00 น.">21:00 น.</option>
+                  <option value="22:00 น.">22:00 น.</option>
+                  <option value="23:00 น.">23:00 น.</option>
+                </select>
+                <div class="row">
+                  <div class="col-md-12">
+                    <button type="button" class="btn btn-primary btnSearchOk w-100 mt-3">ส่งคำแจ้ง</button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="row centered" id="tabSearch">
     <div class="col-md-2"></div>
     <div class="col-md-8">
       <div class="jumbotron jumbotron text-white">
         <div class="container row">
-          <div class="col-md-12"></div>
-          <h2>ค้นหาที่จอดรถ</h2>
-          <button class="btn btn-success" id="btnReload">โหลดข้อมูลใหม่</button>
-          <table class="table table1 table-striped table-bordered mt-5" style="width:100%"></table>
+          <div class="col-md-12">
+            <h2>ค้นหาที่จอดรถ</h2>
+            <h6>(หากใช้งานเว็บในมือถือหรือแทปเล็ต โปรดกดปุ่ม "วงกลมรูป + สีน้ำเงิน" เพื่อดูเพิ่มเติม)</h6>
+            <div class="row">
+              <div class="col-md-12">
+                <button class="btn btn-success ml-3 mt-3 mb-3" id="btnReload">โหลดข้อมูลใหม่</button>
+              </div>
+            </div>
+            <table class="table table1 table-striped table-bordered mt-5" style="width:100%"></table>
+          </div>
         </div>
       </div>
     </div>
@@ -345,9 +440,11 @@
     <div class="col-md-8">
       <div class="jumbotron jumbotron text-white">
         <div class="container row">
-          <div class="col-md-12"></div>
-          <h2>ตรวจสอบคำขอจอดรถ</h2>
-          <table class="table table2 table-striped table-bordered mt-5" style="width:100%"></table>
+          <div class="col-md-12">
+            <h2>ตรวจสอบคำขอจอดรถ</h2>
+            <h6 class="mb-3">(หากใช้งานเว็บในมือถือหรือแทปเล็ต โปรดกดปุ่ม "วงกลมรูป + สีน้ำเงิน" เพื่อดูเพิ่มเติม)</h6>
+            <table class="table table2 table-striped table-bordered mt-5" style="width:100%"></table>
+          </div>
         </div>
       </div>
     </div>
@@ -357,10 +454,11 @@
     <div class="col-md-8">
       <div class="jumbotron jumbotron text-white">
         <div class="container row">
-          <div class="col-md-12"></div>
-          <h2>ค้นหาที่จอดรถ</h2>
-          <button class="btn btn-success" id="btnReload">โหลดข้อมูลใหม่</button>
-          <table class="table table-striped table-bordered mt-5" style="width:100%"></table>
+          <div class="col-md-12">
+            <h2>ข้อมูลผู้ใช้</h2>
+            <button class="btn btn-success ml-3 mb-2 mt-2" id="btnEditInfo">แก้ไขข้อมูล</button>
+            <table class="table table3 table-striped table-bordered mt-5" style="width:100%"></table>
+          </div>
         </div>
       </div>
     </div>
