@@ -18,7 +18,10 @@
 <script>
   $(document).ready(function () {
     loadData();
-
+    $("#asTenant").css({
+        'background-color': '#6c757d',
+        'color': 'white'
+      });
     $("#asTenant").click(function (e) {
       $("#divTenant").show();
       $("#divRenter").hide();
@@ -154,20 +157,10 @@
   </nav>
   <div class="row centered">
     <div class="col-md-3"></div>
-    <div class="col-md-6 bg center" style="color: gray;">_</div>
-    <div class="col-md-3"></div>
-  </div>
-  <div class="row centered">
-    <div class="col-md-3"></div>
-    <div class="col-md-3 bg" style="background-color: gray;"><button id="asRenter" class="btn"
-        style="width: 100%;">เข้าสู่ระบบ เป็น ผู้ใช้งานทั่วไป</button></div>
-    <div class="col-md-3 bg" style="background-color: gray;"><button id="asTenant" class="btn"
-        style="width: 100%;">เข้าสู่ระบบ เป็น ผู้ให้เช่าที่จอดรถ</button></div>
-    <div class="col-md-3"></div>
-  </div>
-  <div class="row centered">
-    <div class="col-md-3"></div>
-    <div class="col-md-6 bg center" style="color: gray;">_</div>
+    <div class="col-md-3  mb-3" ><button id="asRenter" class="btn"
+        style="width: 100%;">เข้าสู่ระบบ"ผู้ใช้ทั่วไป"</button></div>
+    <div class="col-md-3  mb-3" ><button id="asTenant" class="btn"
+        style="width: 100%;">เข้าสู่ระบบ"ผู้ให้เช่า"</button></div>
     <div class="col-md-3"></div>
   </div>
   <div class="row centered" id="divTenant">
@@ -176,7 +169,8 @@
       <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
-          <h1 class="text-white">เข้าสู่ระบบ ผู้ให้เช่า</h1>
+          <p style="color: gray;">_</p>
+          <h1 class="text-white mb-3">เข้าสู่ระบบ ผู้ให้เช่า</h1>
         </div>
         <div class="col-md-1"></div>
       </div>
@@ -201,7 +195,7 @@
       <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
-          <button class="btn btn-primary" id="btnSignin" style="width: 100%;">เข้าสู่ระบบ</button>
+          <button class="btn btn-success" id="btnSignin" style="width: 100%;">เข้าสู่ระบบ</button>
         </div>
         <div class="col-md-1"></div>
       </div>
@@ -221,7 +215,8 @@
       <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
-          <h1 class="text-white">เข้าสู่ระบบ ผู้ใช้งานทั่วไป</h1>
+          <p style="color: gray;">_</p>
+          <h1 class="text-white mb-3">เข้าสู่ระบบ ผู้ใช้งานทั่วไป</h1>
         </div>
         <div class="col-md-1"></div>
       </div>
@@ -246,7 +241,7 @@
       <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
-          <button class="btn btn-primary" id="btnSigninMember" style="width: 100%;">เข้าสู่ระบบ</button>
+          <button class="btn btn-success" id="btnSigninMember" style="width: 100%;">เข้าสู่ระบบ</button>
         </div>
         <div class="col-md-1"></div>
       </div>
@@ -260,37 +255,28 @@
     </div>
     <div class="col-md-3"></div>
   </div>
-  <div class="row centered">
-    <div class="col-md-3"></div>
-    <div class="col-md-6 bg" style="color: gray;">__</div>
-    <div class="col-md-3"></div>
-  </div>
-  <div class="row  mt-5">
-    <div class="col-sm-12"></div>
-  </div>
-  <div class="row  mt-5">
-    <div class="col-sm-12"></div>
-  </div>
+
+
   <!--- Footer -->
   <footer>
-    <div class="container-fluid mt-5 navBG">
+    <div class="container-fluid mt-3 navBG">
       <div class="row text-center">
-        <div class="col-md-4 mt-1">
-          <a href="/"> <img src="img/NavLogo.png"></img></a>
+        <div class="col-md-4 mt-5">
+          <a href="/"> <img class="mt-5" src="img/NavLogo.png"></img></a>
           <hr class="dark">
           <iframe
             src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FEz-Parking-100529508543981%2F&tabs=timeline&width=340&height=300&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
             width="340" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
             allowTransparency="true" allow="encrypted-media"></iframe>
         </div>
-        <div class="col-md-4">
-          <hr class="dark">
+        <div class="col-md-4 mt-5">
+          <hr class="dark mt-5">
           <h5 class="text-dark">ติดต่อสอบถามเรา</h5>
           <hr class="dark">
           <p class="text-dark">Facebook: Ez Parking</p>
         </div>
-        <div class="col-md-4">
-          <hr class="dark">
+        <div class="col-md-4 mt-5">
+          <hr class="dark mt-5">
           <h5 class="text-dark">ชั่วโมงการติดต่อ</h5>
           <hr class="dark">
           <p class="text-dark">จ-ศ: 9:00-16:00</p>

@@ -81,50 +81,52 @@
       </div>
     </div>
   </nav>
-  <div class=" row centered">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-      <div class="jumbotron jumbotron text-white">
-        <div class="container row">
-          <div class="col-md-4 col-sm-12 mt-2">
-            <h1 style="font-size:35px">ค้นหาที่จอดรถ</h1>
-            <p style="font-size:20px">ค้นหาสถานที่และติดต่อขอจอดรถ</p>
-            <button id="btnCheckStatus" class="btn btn-lg btn-primary" style="width: 100%;">สมัครสมาชิก</button></div>
-          <div class="col-md-4 col-sm-12 mt-2">
-            <h1 style="font-size:35px">หรือ</h1>
-            <p style="font-size:20px">มีบัญชีอยู่แล้ว ?</p>
-            <button id="btnSignIn" class="btn btn-lg btn-success" style="width: 100%;">เข้าสู่ระบบ</button>
-          </div>
-          <div class="col-md-4 col-sm-12 mt-2">
-            <h1 style="font-size:35x">ร่วมเป็นผู้ให้เช่า</h1>
-            <p style="font-size:20px">มีพื้นที่ว่างให้รถจอด?</p>
-            <button id="btnSignUp" class="btn btn-lg btn-info" style="width: 100%;">ลงทะเบียน</button></div>
-        </div>
+  <div class="guesthome-image row" style="margin-right: 0px;">
+    <div class="col-md-5">
+      <div class="guesthome-text">
+        <h1 style="font-size:50px">ค้นหาที่จอดรถ</h1>
+        <p style="font-size:20px">ค้นหาสถานที่และติดต่อขอจอดรถ</p>
+        <button id="btnCheckStatus" class="btn btn-lg btn-primary">สมัครสมาชิก</button>
+      </div>
+    </div>
+    <div class="col-md-2" style="background-color: gray;">
+      <div class="guesthome-text">
+        <h1 style="font-size:50px">หรือ</h1>
+        <button id="btnSignIn" class="btn btn-lg btn-success">เข้าสู่ระบบ</button>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="guesthome-text">
+        <h1 style="font-size:50px">ร่วมเป็นผู้ให้เช่า</h1>
+        <p style="font-size:20px">มีพื้นที่ว่างให้รถจอด?</p>
+        <p style="font-size:20px">เริ่มสร้างรายได้ & ยกระดับธุรกิจเลย</p>
+        <button id="btnSignUp" class="btn btn-lg btn-info">ลงทะเบียนเลย</button>
       </div>
     </div>
   </div>
 
 
 
+
   <!--- Footer -->
   <footer>
-    <div class="container-fluid mt-3 navBG">
+    <div class="container-fluid mt-5 navBG">
       <div class="row text-center">
-        <div class="col-md-4 mt-5">
-          <a href="/"> <img class="mt-5" src="img/NavLogo.png"></img></a>
+        <div class="col-md-4 mt-1">
+          <a href="/"> <img src="img/NavLogo.png"></img></a>
           <hr class="dark">
           <iframe
             src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FEz-Parking-100529508543981%2F&tabs=timeline&width=340&height=300&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
             width="340" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
             allowTransparency="true" allow="encrypted-media"></iframe>
         </div>
-        <div class="col-md-4 mt-5">
+        <div class="col-md-4">
           <hr class="dark">
           <h5 class="text-dark">ติดต่อสอบถามเรา</h5>
           <hr class="dark">
           <p class="text-dark">Facebook: Ez Parking</p>
         </div>
-        <div class="col-md-4 mt-5">
+        <div class="col-md-4">
           <hr class="dark">
           <h5 class="text-dark">ชั่วโมงการติดต่อ</h5>
           <hr class="dark">
@@ -149,7 +151,6 @@
     background: #6c757d;
     background-position: center top;
     height: 350px;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/parkingspace.jpg');
   }
 
   .jumbotron {

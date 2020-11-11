@@ -28,10 +28,13 @@
 <script>
     var userid = localStorage.UserID;
     var currentStatus;
+    var checkEdit = 0;
+
     $(document).ready(function () {
         $("#denied").hide();
         $("#tab2").hide();
         $("#tab3").hide();
+        $("#btnToEdit2").hide();
         $("#btn1").css({
             // Primary
             'background-color': '#007bff',
@@ -145,7 +148,7 @@
             $("#approved").hide();
             $("#denied").show();
         });
-        $("#btnReload").click(function (e) {
+        $(".btnReload").click(function (e) {
             window.location.replace("/toggleStatus");
         });
         $("#tabEditInfo").hide();
@@ -160,7 +163,15 @@
         });
         $('#btnToEdit').click(function (e) {
             $("#tabInfo").hide();
+            $("#btnToEdit").hide();
+            $("#btnToEdit2").show();
             $("#tabEditInfo").show();
+        });
+        $("#btnToEdit2").click(function (e) {
+            $("#tabInfo").show();
+            $("#btnToEdit").show();
+            $("#btnToEdit2").hide();
+            $("#tabEditInfo").hide();
         });
         $('#btnSave').click(function (e) {
             const firstname = $("#txtFirstname").val();
@@ -286,7 +297,9 @@
                 responsive: true,
                 deferRender: true,
                 columns: [
-                    { data: "RequestID", title: "หมายเลขคำแจ้ง" },
+                { data: "RequestID", title: "หมายเลขคำแจ้ง" },
+                    { data: "Button", title: "ยืนยัน" },
+                    { data: "Button2", title: "ปฏิเสธ" },
                     { data: "RequesterFirstname", title: "ชื่อจริงผู้แจ้ง" },
                     { data: "RequestierLastname", title: "นามสกุลผู้แจ้ง" },
                     { data: "Day", title: "วันที่" },
@@ -294,8 +307,6 @@
                     { data: "Year", title: "ปี" },
                     { data: "Time", title: "ช่วงเวลา" },
                     { data: "Confirmation", title: "สถานะ" },
-                    { data: "Button2", title: "ปฏิเสธ" },
-                    { data: "Button", title: "ยืนยัน" },
 
                 ],
 
@@ -432,7 +443,7 @@
     <nav class="navbar navbar-expand-md navbar-light navBG sticky-top">
         <div class="container-fluid">
             <!-- Insert LOGO on the nav -->
-            <a class="navbar-brand" href="/"><img src="img/NavLogo.png"></img></a>
+            <a class="navbar-brand" href="/toggleStatus"><img src="img/NavLogo.png"></img></a>
             <!-- Menu Icon -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
                 <span class="navbar-toggler-icon"></span>
@@ -452,15 +463,14 @@
         <div class="col-md-8">
             <div class="jumbotron jumbotron text-white">
                 <div class="container row">
-                    <div class="col-md-4"><button class="btn w-100 mb-2" id="btn1">สถานที่จอดรถ & ข้อมูลผู้ใช้</button>
-                    </div>
-                    <div class="col-md-4"><button class="btn w-100 mb-2" id="btn2">คำแจ้งขอจอดรถ</button></div>
+                    <div class="col-md-4"><button class="btn w-100 mb-2" id="btn1">คำแจ้งขอจอด</button></div>
+                    <div class="col-md-4"><button class="btn w-100 mb-2" id="btn2">ข้อมูลทั่วไป</button></div>
                     <div class="col-md-4"><button class="btn w-100 mb-2" id="btn3">ประวัติคำแจ้ง</button></div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row centered" id="tab1">
+    <div class="row centered" id="tab2">
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <div class="jumbotron jumbotron text-white">
@@ -479,7 +489,7 @@
                         <button class="btn btn-success mt-2 mb-3" id="btnChangeCar">ยืนยันการแก้ไขจำนวนที่ว่าง</button>
                         <hr>
                         <p><strong>สถานะบริการปัจจุบัน: </strong><span id="txtActivation"></span></p>
-                        <button class="btn btn-primary" id="changeStatus">เปลี่ยนสถานะที่จอดรถ</button>
+                        <button class="btn btn-primary mb-3" id="changeStatus">เปลี่ยนสถานะที่จอดรถ</button>
                     </div>
                     <div class="col-md-4 col-sm-0"></div>
                     <div class="col-md-4 col-sm-12">
@@ -489,6 +499,7 @@
                             </div>
                             <div class="col-md-6">
                                 <button class="btn btn-success" id="btnToEdit">แก้ไขข้อมูล</button>
+                                <button class="btn btn-danger" id="btnToEdit2">ยกเลิก</button>
                             </div>
                         </div>
                         <div id="tabInfo">
@@ -548,54 +559,49 @@
         </div>
         <div class="col-md-2"></div>
     </div>
-    <div class="row centered" id="tab2">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <div class="jumbotron jumbotron text-white">
-                <div class="container row">
-                    <div class="col-md-12">
-                        <h2>คำแจ้งจอดรถ</h2>
-                        <h6>(หากใช้งานเว็บในมือถือหรือแทปเล็ต โปรดกดปุ่ม "วงกลมรูป + สีน้ำเงิน" เพื่อดูเพิ่มเติม)</h6>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button class="btn btn-success ml-3 mt-3 mb-3" id="btnReload">โหลดข้อมูลใหม่</button>
-                            </div>
-                        </div>
-                        <table class="table table1 table-striped table-bordered mt-5" style="width:100%"></table>
-                    </div>
+    <div class="row centered" style="background-color: gray;" id="tab1">
+        <div class="col-md-12">
+            <h2 class="mt-3">คำแจ้งจอดรถ</h2>
+            <h6>(หากใช้งานเว็บในมือถือหรือแทปเล็ต โปรดกดปุ่ม "วงกลมรูป + สีน้ำเงิน" เพื่อดูเพิ่มเติม)</h6>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-success ml-3 mt-3 mb-3 btnReload">โหลดข้อมูลใหม่</button>
+                    <table class="table table1 table-striped table-bordered mt-5" style="width:100%"></table>
+                    <p style="color: gray;">_</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row centered" id="tab3">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-            <div class="jumbotron jumbotron text-white">
-                <div class="container row">
-                    <div class="col-md-12">
-                        <h2>ประวัติคำแจ้ง</h2>
-                        <h6>(หากใช้งานเว็บในมือถือหรือแทปเล็ต โปรดกดปุ่ม "วงกลมรูป + สีน้ำเงิน" เพื่อดูเพิ่มเติม)</h6>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button class="btn btn-success ml-3 mt-3 mb-3" id="btnReload">โหลดข้อมูลใหม่</button>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <button class="btn ml-3 mt-3 mb-3" id="btnApproved">รายการที่ได้รับการยืนยัน</button>
-                                <button class="btn ml-3 mt-3 mb-3" id="btnDenied">รายการที่ได้รับการปฏิเสธ</button>
-                            </div>
-                        </div>
-                        <div id="approved">
-                            <table class="table table2 table-striped table-bordered mt-5" style="width:100%"></table>
-                        </div>
-                        <div id="denied">
-                            <table class="table table3 table-striped table-bordered mt-5" style="width:100%"></table>
-                        </div>
-                    </div>
+    <div class="row centered" id="tab3" style="background-color: gray;">
+
+
+
+        <div class="col-md-12">
+            <h2 class="mt-3">ประวัติคำแจ้ง</h2>
+            <h6>(หากใช้งานเว็บในมือถือหรือแทปเล็ต โปรดกดปุ่ม "วงกลมรูป + สีน้ำเงิน" เพื่อดูเพิ่มเติม)</h6>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-success ml-3 mt-3 mb-3 btnReload">โหลดข้อมูลใหม่</button>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn ml-3 mt-3 mb-3" id="btnApproved">รายการที่ได้รับการยืนยัน</button>
+                    <button class="btn ml-3 mt-3 mb-3" id="btnDenied">รายการที่ได้รับการปฏิเสธ</button>
+                </div>
+            </div>
+            <div id="approved">
+                <table class="table table2 table-striped table-bordered mt-5" style="width:100%"></table>
+                <p style="color: gray;">_</p>
+            </div>
+            <div id="denied">
+                <table class="table table3 table-striped table-bordered mt-5" style="width:100%"></table>
+                <p style="color: gray;">_</p>
+            </div>
         </div>
+
+
+
     </div>
     <div class="row mb-5">
         <div class="col-md-3"></div>

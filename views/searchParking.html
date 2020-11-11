@@ -50,6 +50,12 @@
     $("#btnReload").click(function (e) {
       window.location.replace("/searchParking");
     });
+    $("#btnReload2").click(function (e) {
+      window.location.replace("/searchParking");
+    });
+    $("#btnCancelRequest").click(function (e) {
+      window.location.replace("/searchParking");
+    });
     $('#btnSignOut').click(function (e) {
       localStorage.removeItem("memberID");
       window.location.replace('/')
@@ -115,20 +121,20 @@
       window.location.replace("/toggleStatus");
     }
     $.ajax({
-        type: "get",
-        url: "/getVisiting",
-        success: function (dataSet) {
-          let currentNumber = parseInt(dataSet[0].visiting) + 1;
-          let calculated = currentNumber.toString();
-          $.ajax({
-            type: "put",
-            url: "/visiting",
-            data: { visiting: calculated},
-          }).done(function (data, state, shr) {
-          }).fail(function (xhr, state, error) {
-          });
-        }
-      });
+      type: "get",
+      url: "/getVisiting",
+      success: function (dataSet) {
+        let currentNumber = parseInt(dataSet[0].visiting) + 1;
+        let calculated = currentNumber.toString();
+        $.ajax({
+          type: "put",
+          url: "/visiting",
+          data: { visiting: calculated },
+        }).done(function (data, state, shr) {
+        }).fail(function (xhr, state, error) {
+        });
+      }
+    });
     $.ajax({
       type: "get",
       url: "/getMemberInfo/" + memberID,
@@ -161,6 +167,7 @@
       responsive: true,
       deferRender: true,
       columns: [
+        { data: "Button", title: "แจ้งว่าต้องการจอด" },
         { data: "Location", title: "ชื่อบริการ" },
         { data: "Description", title: "คำอธิบาย" },
         { data: "Geo", title: "ภูมิภาค" },
@@ -169,7 +176,7 @@
         { data: "District", title: "ตำบล" },
         { data: "SupportCar", title: "ตำแหน่งที่จอดว่าง" },
         { data: "Activation", title: "สถานะ" },
-        { data: "Button", title: "แจ้งว่าต้องการจอด" },
+
 
       ],
 
@@ -291,6 +298,9 @@
       $("#tabSendRequest").hide();
       $("#tabMenu").hide();
       $("#tabEditInfo").show();
+      $('#btnEditConfirm2').click(function (e) {
+        window.location.replace("/searchParking");
+      });
       $('#btnEditConfirm').click(function (e) {
         const newFirstname = $("#txtEditFirstname").val();
         const newLastname = $("#txtEditLastname").val();
@@ -317,7 +327,7 @@
   <nav class="navbar navbar-expand-md navbar-light navBG sticky-top">
     <div class="container-fluid">
       <!-- Insert LOGO on the nav -->
-      <a class="navbar-brand" href="/"><img src="img/NavLogo.png"></img></a>
+      <a class="navbar-brand" href="/searchParking"><img src="img/NavLogo.png"></img></a>
       <!-- Menu Icon -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
         <span class="navbar-toggler-icon"></span>
@@ -338,11 +348,12 @@
       <div class="jumbotron jumbotron text-white">
         <div class="container row">
           <div class="col-md-4"><button class="btn w-100 mb-2" id="btnTabSearch">ค้นหาที่จอดรถ</button></div>
-          <div class="col-md-4"><button class="btn w-100 mb-2" id="btnTabRequest">ตรวจสอบคำขอจอด</button></div>
+          <div class="col-md-4"><button class="btn w-100 mb-2" id="btnTabRequest">ตรวจสอบคำขอ</button></div>
           <div class="col-md-4"><button class="btn w-100 mb-2" id="btnTabInfo">ข้อมูลส่วนตัว</button></div>
         </div>
       </div>
     </div>
+    <div class="col-md-2"></div>
   </div>
   <div class="row centered" id="tabEditInfo">
     <div class="col-md-2"></div>
@@ -361,6 +372,7 @@
             <input type="text" id="txtEditEmail">
             <p></p>
             <button class="btn btn-success" id="btnEditConfirm">ยืนยัน</button>
+            <button class="btn btn-danger" id="btnEditConfirm2">ยกเลิก</button>
           </div>
         </div>
       </div>
@@ -421,6 +433,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <button type="button" class="btn btn-primary btnSearchOk w-100 mt-3">ส่งคำแจ้ง</button>
+                    <button type="button" class="btn btn-danger w-100 mt-3" id="btnCancelRequest">ยกเลิก</button>
                   </div>
                 </div>
               </div>
@@ -431,52 +444,59 @@
       </div>
     </div>
   </div>
-  <div class="row centered" id="tabSearch">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-      <div class="jumbotron jumbotron text-white">
-        <div class="container row">
-          <div class="col-md-12">
-            <h2>ค้นหาที่จอดรถ</h2>
-            <h6>(หากใช้งานเว็บในมือถือหรือแทปเล็ต โปรดกดปุ่ม "วงกลมรูป + สีน้ำเงิน" เพื่อดูเพิ่มเติม)</h6>
-            <div class="row">
-              <div class="col-md-12">
-                <button class="btn btn-success ml-3 mt-3 mb-3" id="btnReload">โหลดข้อมูลใหม่</button>
-              </div>
-            </div>
-            <table class="table table1 table-striped table-bordered mt-5" style="width:100%"></table>
-          </div>
+  <div class="row centered"  style="background-color: gray;" id="tabSearch" >
+
+
+
+    <div class="col-md-12">
+      <p style="color: gray;">_</p>
+      <h2>ค้นหาที่จอดรถ</h2>
+      <h6>(หากใช้งานเว็บในมือถือหรือแทปเล็ต โปรดกดปุ่ม "วงกลมรูป + สีน้ำเงิน" เพื่อดูเพิ่มเติม)</h6>
+      <div class="row">
+        <div class="col-md-12">
+          <button class="btn btn-success ml-3 mt-3 mb-3" id="btnReload">โหลดข้อมูลใหม่</button>
         </div>
       </div>
+      <table class="table table1 table-striped table-bordered mt-5" style="width:100%"></table>
+      <p style="color: gray;">_</p>
     </div>
+
+
+
   </div>
-  <div class="row centered" id="tabRequest">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-      <div class="jumbotron jumbotron text-white">
-        <div class="container row">
-          <div class="col-md-12">
-            <h2>ตรวจสอบคำขอจอดรถ</h2>
-            <h6 class="mb-3">(หากใช้งานเว็บในมือถือหรือแทปเล็ต โปรดกดปุ่ม "วงกลมรูป + สีน้ำเงิน" เพื่อดูเพิ่มเติม)</h6>
-            <table class="table table2 table-striped table-bordered mt-5" style="width:100%"></table>
-          </div>
+  <div class="row centered" style="background-color: gray;" id="tabRequest">
+
+
+    <div class="col-md-12">
+      <p style="color: gray;">_</p>
+      <h2>ตรวจสอบคำขอจอดรถ</h2>
+      <h6 class="mb-3">(หากใช้งานเว็บในมือถือหรือแทปเล็ต โปรดกดปุ่ม "วงกลมรูป + สีน้ำเงิน" เพื่อดูเพิ่มเติม)</h6>
+      <div class="row">
+        <div class="col-md-12">
+          <button class="btn btn-success ml-3 mt-3 mb-3" id="btnReload2">โหลดข้อมูลใหม่</button>
         </div>
       </div>
+      <table class="table table2 table-striped table-bordered mt-5" style="width:100%"></table>
+      <p style="color: gray;">_</p>
     </div>
+
+
   </div>
-  <div class="row centered" id="tabInfo">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-      <div class="jumbotron jumbotron text-white">
-        <div class="container row">
-          <div class="col-md-12">
-            <h2>ข้อมูลผู้ใช้</h2>
-            <button class="btn btn-success ml-3 mb-2 mt-2" id="btnEditInfo">แก้ไขข้อมูล</button>
-            <table class="table table3 table-striped table-bordered mt-5" style="width:100%"></table>
-          </div>
-        </div>
-      </div>
+  <div class="row centered" style="background-color: gray;" id="tabInfo">
+
+
+
+
+    <div class="col-md-12">
+      <p style="color: gray;">_</p>
+      <h2>ข้อมูลผู้ใช้</h2>
+      <button class="btn btn-success ml-3 mb-2 mt-2" id="btnEditInfo">แก้ไขข้อมูล</button>
+      <table class="table table3 table-striped table-bordered mt-5" style="width:100%"></table>
+      <p style="color: gray;">_</p>
     </div>
+
+
+
   </div>
   <div class="col-md-2"></div>
   </div>

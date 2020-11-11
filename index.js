@@ -496,7 +496,7 @@ app.put("/changeCar", function (req, res) {
 });
 
 // <======Starting server======>
-const PORT = 80
+const PORT = 9099
 app.listen(PORT, function () {
     console.log("Server port is " + PORT);
 });
