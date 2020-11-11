@@ -62,6 +62,54 @@ app.get("/getStatus", function (req, res) {
     });
 })
 
+app.get("/getRequest/:id", function (req, res) {
+    var id = req.params.id;
+    const sql = "SELECT RequestID, RequesterFirstname,RequestierLastname,Day,Month,Year,Time,Confirmation FROM request WHERE UserID =? AND Confirmation='ยังไม่ได้รับการตอบรับ';";
+    con.query(sql,[id], function (err, result, fields) {
+        if (err) {
+            // console.log(err)
+            res.status(500).send("Server error");
+        }
+        else {
+            res.json(result);
+            // console.log(result[0].TripID)
+
+        }
+    });
+})
+
+app.get("/getApprovedRequest/:id", function (req, res) {
+    var id = req.params.id;
+    const sql = "SELECT RequestID, RequesterFirstname,RequestierLastname,Day,Month,Year,Time,Confirmation FROM request WHERE UserID =? AND Confirmation='ได้รับการยืนยันแล้ว';";
+    con.query(sql,[id], function (err, result, fields) {
+        if (err) {
+            // console.log(err)
+            res.status(500).send("Server error");
+        }
+        else {
+            res.json(result);
+            // console.log(result[0].TripID)
+
+        }
+    });
+})
+
+app.get("/getDeniedRequest/:id", function (req, res) {
+    var id = req.params.id;
+    const sql = "SELECT RequestID, RequesterFirstname,RequestierLastname,Day,Month,Year,Time,Confirmation FROM request WHERE UserID =? AND Confirmation='ได้รับการปฏิเสธ';";
+    con.query(sql,[id], function (err, result, fields) {
+        if (err) {
+            // console.log(err)
+            res.status(500).send("Server error");
+        }
+        else {
+            res.json(result);
+            // console.log(result[0].TripID)
+
+        }
+    });
+})
+
 app.get("/getMemberInfo/:id", function (req, res) {
     var id = req.params.id;
     const sql = "SELECT Firstname, Lastname, Phone, Email FROM `member` where UserID = ?;";
@@ -90,10 +138,10 @@ app.get("/getRequestInfo/:id", function (req, res) {
     });
 });
 
-app.post("/sendRequest", function (req, res){
-    var { UserLocation, UserID,MemberID, RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation} = req.body
+app.post("/sendRequest", function (req, res) {
+    var { UserLocation, UserID, MemberID, RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation } = req.body
     const sql = "INSERT INTO `request` (`Location`,`UserID`,`MemberID`,`RequesterFirstname`, `RequestierLastname`, `Day`, `Month`, `Year`, `Time`, `Confirmation`) VALUES (?,?,?,?,?,?,?,?,?,?);";
-    con.query(sql, [ UserLocation, UserID,MemberID, RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation], function (err, result, fields) {
+    con.query(sql, [UserLocation, UserID, MemberID, RequesterFirstname, RequesterLastname, Day, Month, Year, Time, Confirmation], function (err, result, fields) {
         if (err) {
             res.status(500).send("Server error");
             console.log(err)
@@ -357,6 +405,38 @@ app.put("/changeStatus", function (req, res) {
 
     const sql = "UPDATE `account` SET `Activation` = ? WHERE `UserID` = ?;"
     con.query(sql, [Activation, UserID], function (err, result, fields) {
+        if (err) {
+            console.log(err)
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        }
+        else {
+            res.send("/toggleStatus");
+        }
+    })
+});
+
+app.put("/accept", function (req, res) {
+    const Confirmation = req.body.Confirmation
+    const RequestID = req.body.RequestID;
+
+    const sql = "UPDATE `request` SET `Confirmation` = ? WHERE `RequestID` = ?;"
+    con.query(sql, [Confirmation, RequestID], function (err, result, fields) {
+        if (err) {
+            console.log(err)
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        }
+        else {
+            res.send("/toggleStatus");
+        }
+    })
+});
+
+app.put("/deny", function (req, res) {
+    const Confirmation = req.body.Confirmation
+    const RequestID = req.body.RequestID;
+
+    const sql = "UPDATE `request` SET `Confirmation` = ? WHERE `RequestID` = ?;"
+    con.query(sql, [Confirmation, RequestID], function (err, result, fields) {
         if (err) {
             console.log(err)
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");

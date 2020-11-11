@@ -5,12 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
     <title>ผู้ให้เช่า</title>
@@ -20,6 +29,125 @@
     var userid = localStorage.UserID;
     var currentStatus;
     $(document).ready(function () {
+        $("#denied").hide();
+        $("#tab2").hide();
+        $("#tab3").hide();
+        $("#btn1").css({
+            // Primary
+            'background-color': '#007bff',
+            'color': 'white'
+        });
+        $("#btn2").css({
+            // Secondary
+            'background-color': '#6c757d',
+            'color': 'white'
+        });
+        $("#btn3").css({
+            // Secondary
+            'background-color': '#6c757d',
+            'color': 'white'
+        });
+        $("#btnApproved").css({
+            // Primary
+            'background-color': '#007bff',
+            'color': 'white'
+        });
+        $("#btnDenied").css({
+            // Secondary
+            'background-color': '#6c757d',
+            'color': 'white'
+        });
+        $("#btn1").click(function (e) {
+            $("#btn1").css({
+                // Primary
+                'background-color': '#007bff',
+                'color': 'white'
+            });
+            $("#btn2").css({
+                // Secondary
+                'background-color': '#6c757d',
+                'color': 'white'
+            });
+            $("#btn3").css({
+                // Secondary
+                'background-color': '#6c757d',
+                'color': 'white'
+            });
+            $("#tab2").hide();
+            $("#tab3").hide();
+            $("#tab1").show();
+        });
+        $("#btn2").click(function (e) {
+            $("#btn1").css({
+                // Primary
+                'background-color': '#6c757d',
+                'color': 'white'
+            });
+            $("#btn2").css({
+                // Secondary
+                'background-color': '#007bff',
+                'color': 'white'
+            });
+            $("#btn3").css({
+                // Secondary
+                'background-color': '#6c757d',
+                'color': 'white'
+            });
+            $("#tab1").hide();
+            $("#tab3").hide();
+            $("#tab2").show();
+        });
+        $("#btn3").click(function (e) {
+            $("#btn1").css({
+                // Primary
+                'background-color': '#6c757d',
+                'color': 'white'
+            });
+            $("#btn2").css({
+                // Secondary
+                'background-color': '#6c757d',
+                'color': 'white'
+            });
+            $("#btn3").css({
+                // Secondary
+                'background-color': '#007bff',
+                'color': 'white'
+            });
+            $("#tab1").hide();
+            $("#tab2").hide();
+            $("#tab3").show();
+        });
+        $("#btnApproved").click(function (e) {
+            $("#btnApproved").css({
+                // Primary
+                'background-color': '#007bff',
+                'color': 'white'
+            });
+            $("#btnDenied").css({
+                // Secondary
+                'background-color': '#6c757d',
+                'color': 'white'
+            });
+            $("#denied").hide();
+            $("#approved").show();
+        });
+        $("#btnDenied").click(function (e) {
+            $("#btnDenied").css({
+                // Primary
+                'background-color': '#007bff',
+                'color': 'white'
+            });
+            $("#btnApproved").css({
+                // Secondary
+                'background-color': '#6c757d',
+                'color': 'white'
+            });
+            $("#approved").hide();
+            $("#denied").show();
+        });
+        $("#btnReload").click(function (e) {
+            window.location.replace("/toggleStatus");
+        });
         $("#tabEditInfo").hide();
         $('#btnSignIn').click(function () {
             window.location.replace("/signIn");
@@ -43,7 +171,7 @@
             $.ajax({
                 type: "put",
                 url: "/editInfo",
-                data: { UserID: newUserID, Firstname: firstname, Lastname: lastname,  Phone: phone, Email: location,},
+                data: { UserID: newUserID, Firstname: firstname, Lastname: lastname, Phone: phone, Email: location, },
             }).done(function (data, state, shr) {
                 alert("แก้ไขข้อมูลเรียบร้อยแล้ว");
                 window.location.replace(data);
@@ -134,6 +262,153 @@
                 alert("จำเป็นต้องเข้าสู่ระบบก่อน")
                 window.location.replace("/signIn");
             }
+            CurrentTable = $('.table1').DataTable({
+                "searching": true,
+                "lengthChange": true,
+                "paging": true,
+                "ordering": true,
+                "info": true,
+                responsive: true,
+                deferRender: true,
+                columns: [
+                    { data: "RequestID", title: "หมายเลขคำแจ้ง" },
+                    { data: "RequesterFirstname", title: "ชื่อจริงผู้แจ้ง" },
+                    { data: "RequestierLastname", title: "นามสกุลผู้แจ้ง" },
+                    { data: "Day", title: "วันที่" },
+                    { data: "Month", title: "เดือน" },
+                    { data: "Year", title: "ปี" },
+                    { data: "Time", title: "ช่วงเวลา" },
+                    { data: "Confirmation", title: "สถานะ" },
+                    { data: "Button2", title: "ปฏิเสธ" },
+                    { data: "Button", title: "ยืนยัน" },
+
+                ],
+
+            });
+
+            CurrentTable2 = $('.table2').DataTable({
+                "searching": true,
+                "lengthChange": true,
+                "paging": true,
+                "ordering": true,
+                "info": true,
+                responsive: true,
+                deferRender: true,
+                columns: [
+                    { data: "RequestID", title: "หมายเลขคำแจ้ง" },
+                    { data: "RequesterFirstname", title: "ชื่อจริงผู้แจ้ง" },
+                    { data: "RequestierLastname", title: "นามสกุลผู้แจ้ง" },
+                    { data: "Day", title: "วันที่" },
+                    { data: "Month", title: "เดือน" },
+                    { data: "Year", title: "ปี" },
+                    { data: "Time", title: "ช่วงเวลา" },
+                    { data: "Confirmation", title: "สถานะ" },
+
+                ],
+
+            });
+
+            CurrentTable3 = $('.table3').DataTable({
+                "searching": true,
+                "lengthChange": true,
+                "paging": true,
+                "ordering": true,
+                "info": true,
+                responsive: true,
+                deferRender: true,
+                columns: [
+                    { data: "RequestID", title: "หมายเลขคำแจ้ง" },
+                    { data: "RequesterFirstname", title: "ชื่อจริงผู้แจ้ง" },
+                    { data: "RequestierLastname", title: "นามสกุลผู้แจ้ง" },
+                    { data: "Day", title: "วันที่" },
+                    { data: "Month", title: "เดือน" },
+                    { data: "Year", title: "ปี" },
+                    { data: "Time", title: "ช่วงเวลา" },
+                    { data: "Confirmation", title: "สถานะ" },
+
+                ],
+
+            });
+            $.ajax({
+                type: "get",
+                url: "/getRequest/" + userid,
+                success: function (dataSet) {
+                    console.log(dataSet)
+                    for (let i = 0; i < dataSet.length; i++) {
+                        dataSet[i].Button = `<button class='btn btn-primary btnYes mb-3' value='` + dataSet[i].RequestID + `'>ตอบรับ</button>`
+                        dataSet[i].Button2 = `<button class='btn btn-danger btnNo' value='` + dataSet[i].RequestID + `'>ปฏิเสธ</button>`
+                    }
+
+                    //clear DataTable
+                    CurrentTable.clear();
+                    //display modified JSON in DataTable
+                    CurrentTable.rows.add(dataSet).draw();
+                    $(".btnYes").click(function () {
+                        // alert($(this).val())
+                        const RequestID = $(this).val();
+                        const confirmation = "ได้รับการยืนยันแล้ว";
+                        $.ajax({
+                            type: "put",
+                            url: "/accept",
+                            data: { RequestID: RequestID, Confirmation: confirmation },
+                        }).done(function (data, state, shr) {
+                            alert("ตอบรับคำขอแล้ว");
+                            window.location.replace(data);
+                        }).fail(function (xhr, state, error) {
+                            alert("failing")
+                            console.log(error)
+                        });
+
+
+                    });
+                    $(".btnNo").click(function () {
+                        // alert($(this).val())
+                        const RequestID = $(this).val();
+                        const confirmation = "ได้รับการปฏิเสธ";
+                        $.ajax({
+                            type: "put",
+                            url: "/accept",
+                            data: { RequestID: RequestID, Confirmation: confirmation },
+                        }).done(function (data, state, shr) {
+                            alert("ตอบรับคำขอแล้ว");
+                            window.location.replace(data);
+                        }).fail(function (xhr, state, error) {
+                            alert("failing")
+                            console.log(error)
+                        });
+
+
+                    });
+
+                }
+            });
+            $.ajax({
+                type: "get",
+                url: "/getApprovedRequest/" + userid,
+                success: function (dataSet) {
+                    console.log(dataSet)
+
+                    //clear DataTable
+                    CurrentTable2.clear();
+                    //display modified JSON in DataTable
+                    CurrentTable2.rows.add(dataSet).draw();
+
+                }
+            });
+
+            $.ajax({
+                type: "get",
+                url: "/getDeniedRequest/" + userid,
+                success: function (dataSet) {
+                    console.log(dataSet)
+
+                    //clear DataTable
+                    CurrentTable3.clear();
+                    //display modified JSON in DataTable
+                    CurrentTable3.rows.add(dataSet).draw();
+
+                }
+            });
         }
     });
 </script>
@@ -141,23 +416,36 @@
 <body>
     <nav class="navbar navbar-expand-md navbar-light navBG sticky-top">
         <div class="container-fluid">
-          <!-- Insert LOGO on the nav -->
-          <a class="navbar-brand" href="/"><img src="img/NavLogo.png"></img></a>
-          <!-- Menu Icon -->
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <!-- Creating menus link -->
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <!-- ml-auto will move links to the right side of navbar -->
-            <ul class="navbar-nav ml-auto">
-              <!-- active is to highlight -->
-              <button class="btn btn-danger" id="btnSignOut">ออกจากระบบ</button>
-            </ul>
-          </div>
+            <!-- Insert LOGO on the nav -->
+            <a class="navbar-brand" href="/"><img src="img/NavLogo.png"></img></a>
+            <!-- Menu Icon -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Creating menus link -->
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <!-- ml-auto will move links to the right side of navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <!-- active is to highlight -->
+                    <button class="btn btn-danger" id="btnSignOut">ออกจากระบบ</button>
+                </ul>
+            </div>
         </div>
-      </nav>
-    <div class="row centered">
+    </nav>
+    <div class="row centered" id="tabMenu">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="jumbotron jumbotron text-white">
+                <div class="container row">
+                    <div class="col-md-4"><button class="btn w-100 mb-2" id="btn1">สถานที่จอดรถ & ข้อมูลผู้ใช้</button>
+                    </div>
+                    <div class="col-md-4"><button class="btn w-100 mb-2" id="btn2">คำแจ้งขอจอดรถ</button></div>
+                    <div class="col-md-4"><button class="btn w-100 mb-2" id="btn3">ประวัติคำแจ้ง</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row centered" id="tab1">
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <div class="jumbotron jumbotron text-white">
@@ -210,8 +498,8 @@
                                 <div class="col-md-10">
                                     <p>นามสกุล</p>
                                     <input type="text" class="form-control mb-3" id='txtLastname'
-                                        style="background-color: #eaeaea;" placeholder="นามสกุล" onfocus="this.placeholder = ''"
-                                        onblur="this.placeholder = 'นามสกุล'" />
+                                        style="background-color: #eaeaea;" placeholder="นามสกุล"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'นามสกุล'" />
                                 </div>
                                 <div class="col-md-1"></div>
                             </div>
@@ -224,7 +512,7 @@
                                         onfocus="this.placeholder = ''" onblur="this.placeholder = 'เบอร์มือถือ'" />
                                 </div>
                                 <div class="col-md-1"></div>
-                                
+
                             </div>
                             <div class="row">
                                 <div class="col-md-1"></div>
@@ -232,8 +520,9 @@
                                     <p>อีเมล</p>
                                     <input type="text" class="form-control mb-3" id='txtLocation'
                                         style="background-color: #eaeaea;" placeholder="ชื่อตำแหน่งที่จอดรถ"
-                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'ชื่อตำแหน่งที่จอดรถ'" />
-                                        <button type="button" class="btn btn-success" id="btnSave">บันทึก</button>
+                                        onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = 'ชื่อตำแหน่งที่จอดรถ'" />
+                                    <button type="button" class="btn btn-success" id="btnSave">บันทึก</button>
                                 </div>
                                 <div class="col-md-1"></div>
                             </div>
@@ -244,38 +533,97 @@
         </div>
         <div class="col-md-2"></div>
     </div>
-      <!--- Footer -->
-  <footer>
-    <div class="container-fluid mt-5 navBG">
-      <div class="row text-center">
-        <div class="col-md-4 mt-1">
-          <a href="/"> <img src="img/NavLogo.png"></img></a>
-          <hr class="dark">
-          <iframe
-            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FEz-Parking-100529508543981%2F&tabs=timeline&width=340&height=300&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
-            width="340" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
-            allowTransparency="true" allow="encrypted-media"></iframe>
+    <div class="row centered" id="tab2">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="jumbotron jumbotron text-white">
+                <div class="container row">
+                    <div class="col-md-12">
+                        <h2>คำแจ้งจอดรถ</h2>
+                        <h6>(หากใช้งานเว็บในมือถือหรือแทปเล็ต โปรดกดปุ่ม "วงกลมรูป + สีน้ำเงิน" เพื่อดูเพิ่มเติม)</h6>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-success ml-3 mt-3 mb-3" id="btnReload">โหลดข้อมูลใหม่</button>
+                            </div>
+                        </div>
+                        <table class="table table1 table-striped table-bordered mt-5" style="width:100%"></table>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-          <hr class="dark">
-          <h5 class="text-dark">ติดต่อสอบถามเรา</h5>
-          <hr class="dark">
-          <p class="text-dark">Facebook: Ez Parking</p>
-        </div>
-        <div class="col-md-4">
-          <hr class="dark">
-          <h5 class="text-dark">ชั่วโมงการติดต่อ</h5>
-          <hr class="dark">
-          <p class="text-dark">จ-ศ: 9:00-16:00</p>
-
-        </div>
-        <div class="col-12">
-          <hr class="dark">
-          <h5 class="text-dark">&copy; ezparkingthailand.space</h5>
-        </div>
-      </div>
     </div>
-  </footer>
+    <div class="row centered" id="tab3">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="jumbotron jumbotron text-white">
+                <div class="container row">
+                    <div class="col-md-12">
+                        <h2>ประวัติคำแจ้ง</h2>
+                        <h6>(หากใช้งานเว็บในมือถือหรือแทปเล็ต โปรดกดปุ่ม "วงกลมรูป + สีน้ำเงิน" เพื่อดูเพิ่มเติม)</h6>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-success ml-3 mt-3 mb-3" id="btnReload">โหลดข้อมูลใหม่</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn ml-3 mt-3 mb-3" id="btnApproved">รายการที่ได้รับการยืนยัน</button>
+                                <button class="btn ml-3 mt-3 mb-3" id="btnDenied">รายการที่ได้รับการปฏิเสธ</button>
+                            </div>
+                        </div>
+                        <div id="approved">
+                            <table class="table table2 table-striped table-bordered mt-5" style="width:100%"></table>
+                        </div>
+                        <div id="denied">
+                            <table class="table table3 table-striped table-bordered mt-5" style="width:100%"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 bg center" style="color: gray;">_</div>
+        <div class="col-md-3"></div>
+      </div>
+      <div class="row mb-5">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 bg center" style="color: gray;">_</div>
+        <div class="col-md-3"></div>
+      </div>
+    <!--- Footer -->
+    <footer>
+        <div class="container-fluid mt-5 navBG">
+            <div class="row text-center">
+                <div class="col-md-4 mt-1">
+                    <a href="/"> <img src="img/NavLogo.png"></img></a>
+                    <hr class="dark">
+                    <iframe
+                        src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FEz-Parking-100529508543981%2F&tabs=timeline&width=340&height=300&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+                        width="340" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+                        allowTransparency="true" allow="encrypted-media"></iframe>
+                </div>
+                <div class="col-md-4">
+                    <hr class="dark">
+                    <h5 class="text-dark">ติดต่อสอบถามเรา</h5>
+                    <hr class="dark">
+                    <p class="text-dark">Facebook: Ez Parking</p>
+                </div>
+                <div class="col-md-4">
+                    <hr class="dark">
+                    <h5 class="text-dark">ชั่วโมงการติดต่อ</h5>
+                    <hr class="dark">
+                    <p class="text-dark">จ-ศ: 9:00-16:00</p>
+
+                </div>
+                <div class="col-12">
+                    <hr class="dark">
+                    <h5 class="text-dark">&copy; ezparkingthailand.space</h5>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>
