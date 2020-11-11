@@ -7,12 +7,13 @@ const favicon = require('serve-favicon');
 const saltRounds = 10;
 
 let config = {
-    host    : '178.128.57.4',
-    user    : 'caesars2',
+    host: '178.128.57.4',
+    user: 'caesars2',
     password: '0812678626',
     database: 'ezparking',
     port: '3306'
-  };
+};
+
 
 
 const app = express();
@@ -67,7 +68,7 @@ app.get("/getStatus", function (req, res) {
 app.get("/getRequest/:id", function (req, res) {
     var id = req.params.id;
     const sql = "SELECT RequestID, RequesterFirstname,RequestierLastname,Day,Month,Year,Time,Confirmation FROM request WHERE UserID =? AND Confirmation='ยังไม่ได้รับการตอบรับ';";
-    con.query(sql,[id], function (err, result, fields) {
+    con.query(sql, [id], function (err, result, fields) {
         if (err) {
             // console.log(err)
             res.status(500).send("Server error");
@@ -83,7 +84,7 @@ app.get("/getRequest/:id", function (req, res) {
 app.get("/getApprovedRequest/:id", function (req, res) {
     var id = req.params.id;
     const sql = "SELECT RequestID, RequesterFirstname,RequestierLastname,Day,Month,Year,Time,Confirmation FROM request WHERE UserID =? AND Confirmation='ได้รับการยืนยันแล้ว';";
-    con.query(sql,[id], function (err, result, fields) {
+    con.query(sql, [id], function (err, result, fields) {
         if (err) {
             // console.log(err)
             res.status(500).send("Server error");
@@ -99,7 +100,7 @@ app.get("/getApprovedRequest/:id", function (req, res) {
 app.get("/getDeniedRequest/:id", function (req, res) {
     var id = req.params.id;
     const sql = "SELECT RequestID, RequesterFirstname,RequestierLastname,Day,Month,Year,Time,Confirmation FROM request WHERE UserID =? AND Confirmation='ได้รับการปฏิเสธ';";
-    con.query(sql,[id], function (err, result, fields) {
+    con.query(sql, [id], function (err, result, fields) {
         if (err) {
             // console.log(err)
             res.status(500).send("Server error");
@@ -372,6 +373,35 @@ app.put("/editInfo", function (req, res) {
 
     const sql = "UPDATE `account` SET `Firstname` = ?,`Lastname` = ?, `Phone` = ? ,`Email` = ? WHERE `UserID` = ?;"
     con.query(sql, [Firstname, Lastname, Phone, Email, UserID], function (err, result, fields) {
+        if (err) {
+            console.log(err)
+            res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
+        }
+        else {
+            res.send("/toggleStatus");
+        }
+    })
+});
+app.get("/getVisiting", function (req, res) {
+
+    const sql = "SELECT * FROM `visiting`";
+    con.query(sql, function (err, result, fields) {
+        if (err) {
+            // console.log(err)
+            res.status(500).send("Server error");
+        }
+        else {
+            res.json(result);
+            // console.log(result[0].TripID)
+
+        }
+    });
+})
+
+app.put("/visiting", function (req, res) {
+    const visiting = req.body.visiting;
+    const sql = "UPDATE `visiting` SET `visiting` = ?"
+    con.query(sql, [visiting], function (err, result, fields) {
         if (err) {
             console.log(err)
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");

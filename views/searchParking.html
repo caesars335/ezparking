@@ -115,6 +115,21 @@
       window.location.replace("/toggleStatus");
     }
     $.ajax({
+        type: "get",
+        url: "/getVisiting",
+        success: function (dataSet) {
+          let currentNumber = parseInt(dataSet[0].visiting) + 1;
+          let calculated = currentNumber.toString();
+          $.ajax({
+            type: "put",
+            url: "/visiting",
+            data: { visiting: calculated},
+          }).done(function (data, state, shr) {
+          }).fail(function (xhr, state, error) {
+          });
+        }
+      });
+    $.ajax({
       type: "get",
       url: "/getMemberInfo/" + memberID,
       success: function (dataSet) {
