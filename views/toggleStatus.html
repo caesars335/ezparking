@@ -20,6 +20,7 @@
     var userid = localStorage.UserID;
     var currentStatus;
     $(document).ready(function () {
+        $("#tabEditInfo").hide();
         $('#btnSignIn').click(function () {
             window.location.replace("/signIn");
         });
@@ -29,7 +30,10 @@
         $('#btnCheckStatus').click(function () {
             window.location.replace("/searchParking");
         });
-
+        $('#btnToEdit').click(function (e) {
+            $("#tabInfo").hide();
+            $("#tabEditInfo").show();
+        });
         $('#btnSave').click(function (e) {
             const firstname = $("#txtFirstname").val();
             const lastname = $("#txtLastname").val();
@@ -39,7 +43,7 @@
             $.ajax({
                 type: "put",
                 url: "/editInfo",
-                data: { UserID: newUserID, Firstname: firstname, Lastname: lastname, Location: location, Phone: phone },
+                data: { UserID: newUserID, Firstname: firstname, Lastname: lastname,  Phone: phone, Email: location,},
             }).done(function (data, state, shr) {
                 alert("แก้ไขข้อมูลเรียบร้อยแล้ว");
                 window.location.replace(data);
@@ -105,6 +109,10 @@
                         $("#lastname").html(data[0].Lastname)
                         $("#phone").html(data[0].Phone)
                         $("#email").html(data[0].Email)
+                        $("#editedFirstname").val(data[0].Firstname)
+                        $("#editedLastname").val(data[0].Lastname)
+                        $("#editedPhone").val(data[0].Phone)
+                        $("#editedEmail").val(data[0].Email)
                         $("#location").html(data[0].Location)
                         $("#description").html(data[0].Description)
                         $("#geo").html(data[0].Geo)
@@ -116,7 +124,7 @@
                         $("#txtActivation").html(data[0].Activation)
                         $("#txtFirstname").val(data[0].Firstname);
                         $("#txtLastname").val(data[0].Lastname);
-                        $("#txtLocation").val(data[0].Location);
+                        $("#txtLocation").val(data[0].Email);
                         $("#txtPhone").val(data[0].Phone);
 
                         currentStatus = data[0].Activation;
@@ -177,88 +185,64 @@
                                 <h3>ข้อมูลผู้ใช้</h3>
                             </div>
                             <div class="col-md-6">
-                                <button class="btn btn-success" data-toggle="modal"
-                                    data-target="#exampleModal">แก้ไขข้อมูล</button>
+                                <button class="btn btn-success" id="btnToEdit">แก้ไขข้อมูล</button>
                             </div>
                         </div>
-                        <p><strong>ชื่อจริง: </strong><span id="firstname"></span></p>
-                        <p><strong>นามสกุล: </strong><span id="lastname"></span></p>
-                        <p><strong>เบอร์มือถือ: </strong><span id="phone"></span></p>
-                        <p><strong>อีเมล: </strong><span id="email"></span></p>
+                        <div id="tabInfo">
+                            <p><strong>ชื่อจริง: </strong><span id="firstname"></span></p>
+                            <p><strong>นามสกุล: </strong><span id="lastname"></span></p>
+                            <p><strong>เบอร์มือถือ: </strong><span id="phone"></span></p>
+                            <p><strong>อีเมล: </strong><span id="email"></span></p>
+                        </div>
+                        <div id="tabEditInfo">
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <p>ชื่อจริง</p>
+                                    <input type="text" class="form-control mb-3" id='txtFirstname'
+                                        style="background-color: #eaeaea;" placeholder="ชื่อจริง"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'ชื่อจริง'" />
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <p>นามสกุล</p>
+                                    <input type="text" class="form-control mb-3" id='txtLastname'
+                                        style="background-color: #eaeaea;" placeholder="นามสกุล" onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = 'นามสกุล'" />
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <p>เบอร์มือถือ</p>
+                                    <input type="text" class="form-control mb-3" id='txtPhone'
+                                        style="background-color: #eaeaea;" placeholder="เบอร์มือถือ"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'เบอร์มือถือ'" />
+                                </div>
+                                <div class="col-md-1"></div>
+                                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <p>อีเมล</p>
+                                    <input type="text" class="form-control mb-3" id='txtLocation'
+                                        style="background-color: #eaeaea;" placeholder="ชื่อตำแหน่งที่จอดรถ"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'ชื่อตำแหน่งที่จอดรถ'" />
+                                        <button type="button" class="btn btn-success" id="btnSave">บันทึก</button>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-2"></div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">แก้ไขข้อมูล</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <input type="password" class="form-control mb-3" id='txtPassword' style="background-color: #eaeaea;"
-                        placeholder="รหัสผ่าน" onfocus="this.placeholder = ''" onblur="this.placeholder = 'รหัสผ่าน'" />
-                </div>
-                <div class="col-md-1"></div>
-            </div> -->
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-10">
-                            <p>ชื่อจริง</p>
-                            <input type="text" class="form-control mb-3" id='txtFirstname'
-                                style="background-color: #eaeaea;" placeholder="ชื่อจริง"
-                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'ชื่อจริง'" />
-                        </div>
-                        <div class="col-md-1"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-10">
-                            <p>นามสกุล</p>
-                            <input type="text" class="form-control mb-3" id='txtLastname'
-                                style="background-color: #eaeaea;" placeholder="นามสกุล" onfocus="this.placeholder = ''"
-                                onblur="this.placeholder = 'นามสกุล'" />
-                        </div>
-                        <div class="col-md-1"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-10">
-                            <p>ชื่อตำแหน่งที่จอดรถ</p>
-                            <input type="text" class="form-control mb-3" id='txtLocation'
-                                style="background-color: #eaeaea;" placeholder="ชื่อตำแหน่งที่จอดรถ"
-                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'ชื่อตำแหน่งที่จอดรถ'" />
-                        </div>
-                        <div class="col-md-1"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-10">
-                            <p>เบอร์มือถือ</p>
-                            <input type="text" class="form-control mb-3" id='txtPhone'
-                                style="background-color: #eaeaea;" placeholder="เบอร์มือถือ"
-                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'เบอร์มือถือ'" />
-                        </div>
-                        <div class="col-md-1"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" id="btnSave">บันทึก</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">ยกเลิก</button>
-                </div>
-            </div>
-        </div>
     </div>
       <!--- Footer -->
   <footer>

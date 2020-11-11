@@ -316,12 +316,12 @@ app.get("/getLocationName/:UserID", function (req, res) {
 app.put("/editInfo", function (req, res) {
     const Firstname = req.body.Firstname;
     const Lastname = req.body.Lastname;
-    const Location = req.body.Location;
+    const Email = req.body.Email;
     const Phone = req.body.Phone;
     const UserID = req.body.UserID;
 
-    const sql = "UPDATE `account` SET `Firstname` = ?,`Lastname` = ?, `Location` = ?, `Phone` = ? WHERE `UserID` = ?;"
-    con.query(sql, [Firstname, Lastname, Location, Phone, UserID], function (err, result, fields) {
+    const sql = "UPDATE `account` SET `Firstname` = ?,`Lastname` = ?, `Phone` = ? ,`Email` = ? WHERE `UserID` = ?;"
+    con.query(sql, [Firstname, Lastname, Phone, Email, UserID], function (err, result, fields) {
         if (err) {
             console.log(err)
             res.status(503).send("เซิร์ฟเวอร์ไม่ตอบสนอง");
